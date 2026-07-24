@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('educations', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->foreignId('profile_id')
+                ->constrained('candidate_profiles')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->string('school', 200);
+
+            $table->string('major', 100);
+
+            $table->integer('start_year');
+
+            $table->integer('end_year')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('educations');
+    }
+};
