@@ -27,6 +27,8 @@ class JobListResource extends JsonResource
                 'name' => $this->category->name,
             ],
 
+            'bookmarked' => $this->bookmarkedUsers->isNotEmpty(),
+
             'salary_min' => $this->salary_min,
             'salary_max' => $this->salary_max,
             'location' => $this->location,

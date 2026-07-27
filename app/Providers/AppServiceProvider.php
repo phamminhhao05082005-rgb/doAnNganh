@@ -18,12 +18,28 @@ use App\Interfaces\JobRepositoryInterface;
 use App\Interfaces\JobServiceInterface;
 use App\Interfaces\SkillRepositoryInterface;
 use App\Interfaces\SkillServiceInterface;
+use App\Interfaces\StudentBookmarkRepositoryInterface;
+use App\Interfaces\StudentBookmarkServiceInterface;
+use App\Interfaces\StudentEducationServiceInterface;
+use App\Interfaces\StudentProfileRepositoryInterface;
+use App\Interfaces\StudentProfileServiceInterface;
 use App\Repositories\CategoryRepository;
+use App\Interfaces\StudentEducationRepositoryInterface;
+use App\Interfaces\StudentExperienceRepositoryInterface;
+use App\Interfaces\StudentExperienceServiceInterface;
 use App\Repositories\JobRepository;
 use App\Repositories\SkillRepository;
+use App\Repositories\StudentBookmarkRepository;
+use App\Repositories\StudentEducationRepository;
+use App\Repositories\StudentExperienceRepository;
+use App\Repositories\StudentProfileRepository;
 use App\Services\CategoryService;
 use App\Services\JobService;
 use App\Services\SkillService;
+use App\Services\StudentBookmarkService;
+use App\Services\StudentEducationService;
+use App\Services\StudentExperienceService;
+use App\Services\StudentProfileService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +58,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
         $this->app->bind(SkillRepositoryInterface::class, SkillRepository::class);
         $this->app->bind(SkillServiceInterface::class, SkillService::class);
+        $this->app->bind(StudentProfileRepositoryInterface::class, StudentProfileRepository::class);
+        $this->app->bind(StudentProfileServiceInterface::class, StudentProfileService::class);
+        $this->app->bind(StudentEducationRepositoryInterface::class, StudentEducationRepository::class);
+        $this->app->bind(StudentEducationServiceInterface::class, StudentEducationService::class);
+        $this->app->bind(StudentExperienceRepositoryInterface::class, StudentExperienceRepository::class);
+        $this->app->bind(StudentExperienceServiceInterface::class, StudentExperienceService::class);
+        $this->app->bind(StudentBookmarkRepositoryInterface::class, StudentBookmarkRepository::class);
+        $this->app->bind(StudentBookmarkServiceInterface::class, StudentBookmarkService::class);
     }
 
     /**

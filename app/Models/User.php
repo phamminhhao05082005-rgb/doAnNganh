@@ -71,6 +71,8 @@ class User extends Authenticatable
             'bookmarks',
             'user_id',
             'job_id'
-        )->withTimestamps();
+        )
+            ->using(Bookmark::class)
+            ->withTimestamps();
     }
 }

@@ -65,6 +65,8 @@ class Job extends Model
             'bookmarks',
             'job_id',
             'user_id'
-        )->withTimestamps();
+        )
+            ->using(Bookmark::class)
+            ->withTimestamps();
     }
 }

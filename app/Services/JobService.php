@@ -16,12 +16,8 @@ class JobService implements JobServiceInterface
 
     public function getMyJobs()
     {
-        $companyId = Auth::user()
-            ->company
-            ->id;
-
-        return $this->jobRepository
-            ->getMyJobs($companyId);
+        $companyId = Auth::user()->company->id;
+        return $this->jobRepository->getMyJobs($companyId);
     }
 
     public function getAllJobs(array $filters = [])
@@ -75,36 +71,22 @@ class JobService implements JobServiceInterface
             ->create($data);
     }
 
-    public function update(
-        Job $job,
-        array $data
-    ): Job {
-
+    public function update(Job $job, array $data): Job {
         $this->checkOwner($job);
-
-        return $this->jobRepository
-            ->update(
-                $job,
-                $data
-            );
+        return $this->jobRepository->update($job, $data);
     }
 
     public function delete(Job $job): void
     {
         $this->checkOwner($job);
-
-        $this->jobRepository
-            ->delete($job);
+        $this->jobRepository->delete($job);
     }
 
     private function checkOwner(Job $job): void
     {
-        $companyId = Auth::user()
-            ->company
-            ->id;
+        $companyId = Auth::user()->company->id;
 
         if ($job->company_id != $companyId) {
-
             throw new Exception(
                 "You cannot access this job."
             );

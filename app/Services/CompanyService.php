@@ -54,35 +54,21 @@ class CompanyService implements CompanyServiceInterface
         }
 
         $userData = [
-
             'role_id' => $role->id,
-
             'full_name' => $data['full_name'],
-
             'email' => $data['email'],
-
             'password' => bcrypt($data['password']),
-
             'phone' => $data['phone'] ?? null,
-
             'status' => true,
-
             'provider' => 'LOCAL',
-
         ];
 
         $companyData = [
-
             'name' => $data['name'],
-
             'website' => $data['website'] ?? null,
-
             'address' => $data['address'] ?? null,
-
             'description' => $data['description'] ?? null,
-
             'logo' => $data['logo'] ?? null,
-
         ];
 
         return $this->companyRepository
@@ -95,27 +81,17 @@ class CompanyService implements CompanyServiceInterface
     ): Company {
 
         $userData = [
-
             'full_name' => $data['full_name'],
-
             'email' => $data['email'],
-
             'phone' => $data['phone'] ?? null,
-
         ];
 
         $companyData = [
-
             'name' => $data['name'],
-
             'website' => $data['website'] ?? null,
-
             'address' => $data['address'] ?? null,
-
             'description' => $data['description'] ?? null,
-
             'logo' => $data['logo'] ?? null,
-
         ];
 
         return $this->companyRepository
@@ -165,32 +141,18 @@ class CompanyService implements CompanyServiceInterface
         }
 
         $userData = [
-
             'full_name' => $data['full_name'],
-
             'phone' => $data['phone'] ?? null,
-
         ];
 
         $companyData = [
-
             'name' => $data['name'],
-
             'website' => $data['website'] ?? null,
-
             'address' => $data['address'] ?? null,
-
             'description' => $data['description'] ?? null,
-
             'logo' => $data['logo'] ?? null,
-
         ];
 
-        return $this->companyRepository
-            ->update(
-                $company,
-                $userData,
-                $companyData
-            );
+        return $this->companyRepository->update($company, $userData, $companyData);
     }
 }

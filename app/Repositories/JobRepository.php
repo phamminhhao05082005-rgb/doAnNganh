@@ -24,7 +24,12 @@ class JobRepository implements JobRepositoryInterface
         $query = Job::with([
             'company',
             'category',
-            'skills'
+            'skills',
+            'bookmarkedUsers' => function ($q) {
+                if (auth()->check()) {
+                    $q->where('users.id', auth()->id());
+                }
+            }
         ]);
 
         $user = Auth::user();
@@ -94,7 +99,12 @@ class JobRepository implements JobRepositoryInterface
         return Job::with([
             'company',
             'category',
-            'skills'
+            'skills',
+            'bookmarkedUsers' => function ($q) {
+                if (auth()->check()) {
+                    $q->where('users.id', auth()->id());
+                }
+            }
         ])->find($jobId);
     }
 
