@@ -29,9 +29,11 @@ class UpdateStudentProfileRequest extends FormRequest
 
             'avatar' => [
                 'nullable',
-                'string',
-                'max:500'
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048'
             ],
+
 
             'title' => [
                 'nullable',

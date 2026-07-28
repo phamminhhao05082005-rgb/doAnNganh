@@ -10,10 +10,14 @@ class StudentProfileService implements StudentProfileServiceInterface
 {
     protected StudentProfileRepositoryInterface $repository;
 
+    protected CloudinaryService $cloudinary;
+
     public function __construct(
-        StudentProfileRepositoryInterface $repository
+        StudentProfileRepositoryInterface $repository,
+        CloudinaryService $cloudinary
     ) {
         $this->repository = $repository;
+        $this->cloudinary = $cloudinary;
     }
 
     public function getProfile(User $user): User
@@ -21,8 +25,25 @@ class StudentProfileService implements StudentProfileServiceInterface
         return $this->repository->getProfile($user);
     }
 
-    public function update(User $user, array $data): User
-    {
-        return $this->repository->update($user, $data);
+    public function update(
+        User $user,
+        array $data,
+        $avatar = null
+    ): User {
+
+        if ($avatar) {
+
+            $upload = $this->cloudinary->uploadFile(
+                $avatar,
+                'student_avatars'
+            );
+
+            $data['avatar'] = $upload['url'];
+        }
+
+        return $this->repository->update(
+            $user,
+            $data
+        );
     }
 }

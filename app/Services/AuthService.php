@@ -10,11 +10,13 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Collection;
 use Google\Client;
 use App\Models\Role;
+use App\Services\CloudinaryService;
 
 class AuthService implements AuthServiceInterface
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private CloudinaryService $cloudinary
     ) {}
 
     public function login(string $email, string $password): array
@@ -91,16 +93,26 @@ class AuthService implements AuthServiceInterface
 
             $studentRole = Role::where('name', 'STUDENT')->first();
 
-            $user = User::create([
+            $avatar = null;
 
+            if (!empty($payload['picture'])) {
+
+                $upload = $this->cloudinary->uploadUrl(
+                    $payload['picture'],
+                    'student_avatars'
+                );
+
+                $avatar = $upload['url'];
+            }
+
+            $user = User::create([
                 'role_id' => $studentRole->id,
                 'full_name' => $payload['name'],
                 'email' => $email,
                 'password' => bcrypt(fake()->password()),
-                'avatar' => $payload['picture'],
+                'avatar' => $avatar,
                 'provider' => 'google',
                 'status' => true
-
             ]);
 
             $user->load('role');
@@ -110,6 +122,7 @@ class AuthService implements AuthServiceInterface
 
         return [
             'token' => $token,
-            'user' => $user];
+            'user' => $user
+        ];
     }
 }

@@ -27,12 +27,14 @@ class StudentProfileController extends Controller
 
     public function update(UpdateStudentProfileRequest $request)
     {
+
         return response()->json([
             'message' => 'Cập nhật hồ sơ thành công.',
             'data' => new StudentProfileResource(
                 $this->service->update(
                     $request->user(),
-                    $request->validated()
+                    $request->validated(),
+                    $request->file('avatar')
                 )
             )
         ]);
