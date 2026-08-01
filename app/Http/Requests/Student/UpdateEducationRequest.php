@@ -22,30 +22,18 @@ class UpdateEducationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'school' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+           'school_name' => 'required|max:255',
 
-            'major' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+            'major' => 'required|max:255',
 
-            'start_year' => [
-                'required',
-                'integer',
-                'digits:4',
-            ],
+            'degree' => 'nullable|max:255',
 
-            'end_year' => [
-                'nullable',
-                'integer',
-                'digits:4',
-                'gte:start_year',
-            ],
+            'gpa' => 'nullable|numeric|min:0|max:4',
+
+            'start_date' => 'required|date',
+
+            'end_date' => 'nullable|date|after_or_equal:start_date'
+
         ];
     }
 }

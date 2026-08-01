@@ -3,7 +3,11 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminCompanyController;
+use App\Http\Controllers\Student\CVController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CVEducationController;
+use App\Http\Controllers\CVExperienceController;
+use App\Http\Controllers\CVTemplateController;
 use App\Http\Controllers\Employer\EmployerCompanyController;
 use App\Http\Controllers\Employer\EmployerJobController;
 use App\Http\Controllers\SkillController;
@@ -95,7 +99,83 @@ Route::prefix('auth')->group(function () {
 
                 Route::delete(
                     '/bookmarks/{job}',
-                    [StudentBookmarkController::class, 'destroy']);
+                    [StudentBookmarkController::class, 'destroy']
+                );
+
+                Route::get(
+                    '/cv-templates',
+                    [CVTemplateController::class, 'index']
+                );
+
+                Route::get(
+                    '/cv-templates/{id}',
+                    [CVTemplateController::class, 'show']
+                );
+
+                Route::get(
+                    '/cvs',
+                    [CVController::class, 'index']
+                );
+
+                Route::get(
+                    '/cvs/{id}',
+                    [CVController::class, 'show']
+                );
+
+                Route::post(
+                    '/cvs',
+                    [CVController::class, 'store']
+                );
+
+                Route::put(
+                    '/cvs/{id}',
+                    [CVController::class, 'update']
+                );
+
+                Route::delete(
+                    '/cvs/{id}',
+                    [CVController::class, 'destroy']
+                );
+
+                Route::get(
+                    "/cvs/{cv}/educations",
+                    [CVEducationController::class, "index"]
+                );
+
+                Route::post(
+                    "/cvs/{cv}/educations",
+                    [CVEducationController::class, "store"]
+                );
+
+                Route::put(
+                    "/cvs/{cv}/educations/{education}",
+                    [CVEducationController::class, "update"]
+                );
+
+                Route::delete(
+                    "/cvs/{cv}/educations/{education}",
+                    [CVEducationController::class, "destroy"]
+                );
+
+                Route::get(
+                    "/cvs/{cv}/experiences",
+                    [CVExperienceController::class, "index"]
+                );
+
+                Route::post(
+                    "/cvs/{cv}/experiences",
+                    [CVExperienceController::class, "store"]
+                );
+
+                Route::put(
+                    "/cvs/{cv}/experiences/{experience}",
+                    [CVExperienceController::class, "update"]
+                );
+
+                Route::delete(
+                    "/cvs/{cv}/experiences/{experience}",
+                    [CVExperienceController::class, "destroy"]
+                );
             });
     });
 });

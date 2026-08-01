@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CVTemplate extends Model
 {
+    protected $table = 'cv_templates';
+
     protected $fillable = [
         'name',
         'description',

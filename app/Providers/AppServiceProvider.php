@@ -14,6 +14,12 @@ use App\Repositories\CompanyRepository;
 use App\Services\AuthService;
 use App\Services\CompanyService;
 use App\Interfaces\CompanyServiceInterface;
+use App\Interfaces\CVEducationRepositoryInterface;
+use App\Interfaces\CVEducationServiceInterface;
+use App\Interfaces\CVExperienceRepositoryInterface;
+use App\Interfaces\CVExperienceServiceInterface;
+use App\Interfaces\CVRepositoryInterface;
+use App\Interfaces\CVServiceInterface;
 use App\Interfaces\JobRepositoryInterface;
 use App\Interfaces\JobServiceInterface;
 use App\Interfaces\SkillRepositoryInterface;
@@ -40,6 +46,17 @@ use App\Services\StudentBookmarkService;
 use App\Services\StudentEducationService;
 use App\Services\StudentExperienceService;
 use App\Services\StudentProfileService;
+use App\Interfaces\CVTemplateRepositoryInterface;
+use App\Repositories\CVTemplateRepository;
+use App\Interfaces\CVTemplateServiceInterface;
+use App\Repositories\CVEducationRepository;
+use App\Repositories\CVExperienceRepository;
+use App\Repositories\CVRepository;
+use App\Services\CVEducationService;
+use App\Services\CVExperienceService;
+use App\Services\CVService;
+use App\Services\CVTemplateService;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -66,6 +83,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StudentExperienceServiceInterface::class, StudentExperienceService::class);
         $this->app->bind(StudentBookmarkRepositoryInterface::class, StudentBookmarkRepository::class);
         $this->app->bind(StudentBookmarkServiceInterface::class, StudentBookmarkService::class);
+        $this->app->bind(CVTemplateRepositoryInterface::class, CVTemplateRepository::class);
+        $this->app->bind(CVTemplateServiceInterface::class, CVTemplateService::class);
+        $this->app->bind(CVRepositoryInterface::class, CVRepository::class);
+        $this->app->bind(CVServiceInterface::class, CVService::class);
+        $this->app->bind(CVEducationRepositoryInterface::class,CVEducationRepository::class);
+        $this->app->bind(CVEducationServiceInterface::class, CVEducationService::class);
+        $this->app->bind(CVExperienceRepositoryInterface::class, CVExperienceRepository::class);
+        $this->app->bind(CVExperienceServiceInterface::class, CVExperienceService::class);
     }
 
     /**

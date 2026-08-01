@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Resources\Student;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StudentEducationResource extends JsonResource
+class CVEducationResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray(
+        Request $request
+    ): array
     {
         return [
+
             'id' => $this->id,
 
             'school_name' => $this->school_name,
@@ -27,7 +25,8 @@ class StudentEducationResource extends JsonResource
 
             'start_date' => $this->start_date,
 
-            'end_date' => $this->end_date
+            'end_date' => $this->end_date,
+
         ];
     }
 }

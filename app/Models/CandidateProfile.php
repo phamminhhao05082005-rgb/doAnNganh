@@ -42,4 +42,6 @@ class CandidateProfile extends Model
     {
         return $this->hasMany(CV::class, 'profile_id');
     }
+
+    
 }

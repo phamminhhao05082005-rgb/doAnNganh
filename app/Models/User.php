@@ -75,4 +75,9 @@ class User extends Authenticatable
             ->using(Bookmark::class)
             ->withTimestamps();
     }
+
+    public function cvs(): HasMany
+    {
+        return $this->hasMany(CV::class);
+    }
 }

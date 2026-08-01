@@ -28,10 +28,12 @@ class StudentEducationRepository implements StudentEducationRepositoryInterface
         ]);
 
         return $profile->educations()->create([
-            'school' => $data['school'],
+            'school_name' => $data['school_name'],
             'major' => $data['major'],
-            'start_year' => $data['start_year'],
-            'end_year' => $data['end_year'],
+            'degree' => $data['degree'] ?? null,
+            'gpa' => $data['gpa'] ?? null,
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'] ?? null,
         ]);
     }
 
@@ -46,10 +48,12 @@ class StudentEducationRepository implements StudentEducationRepositoryInterface
         DB::transaction(function () use ($education, $data) {
 
             $education->update([
-                'school' => $data['school'],
+                'school_name' => $data['school_name'],
                 'major' => $data['major'],
-                'start_year' => $data['start_year'],
-                'end_year' => $data['end_year'],
+                'degree' => $data['degree'] ?? null,
+                'gpa' => $data['gpa'] ?? null,
+                'start_date' => $data['start_date'],
+                'end_date' => $data['end_date'] ?? null,
             ]);
         });
 
