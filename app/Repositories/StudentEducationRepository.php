@@ -37,11 +37,7 @@ class StudentEducationRepository implements StudentEducationRepositoryInterface
         ]);
     }
 
-    public function update(
-        User $user,
-        Education $education,
-        array $data
-    ): Education {
+    public function update(User $user, Education $education, array $data): Education {
 
         $education = $this->findEducationOfUser($user, $education);
 
@@ -63,14 +59,10 @@ class StudentEducationRepository implements StudentEducationRepositoryInterface
     public function delete(User $user, Education $education): void
     {
         $education = $this->findEducationOfUser($user, $education);
-
         $education->delete();
     }
 
-    private function findEducationOfUser(
-        User $user,
-        Education $education
-    ): Education {
+    private function findEducationOfUser(User $user, Education $education): Education {
 
         $profile = CandidateProfile::where('user_id', $user->id)->first();
 

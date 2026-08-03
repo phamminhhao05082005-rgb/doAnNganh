@@ -27,52 +27,26 @@ class CVExperienceController extends Controller
         );
     }
 
-    public function store(
-        StoreCVExperienceRequest $request,
-        CV $cv
-    ){
+    public function store(StoreCVExperienceRequest $request, CV $cv){
         return new CVExperienceResource(
-
-            $this->service->create(
-                $cv,
-                $request->validated()
-            )
-
-        );
+            $this->service->create($cv, $request->validated()));
     }
 
-    public function update(
-        UpdateCVExperienceRequest $request,
-        CV $cv,
-        CVExperience $experience
-    ){
+    public function update(UpdateCVExperienceRequest $request, CV $cv, CVExperience $experience){
         if($experience->cv_id!=$cv->id)
             abort(404);
 
         return new CVExperienceResource(
-
-            $this->service->update(
-                $experience,
-                $request->validated()
-            )
-
-        );
+            $this->service->update($experience, $request->validated()));
     }
 
-    public function destroy(
-        CV $cv,
-        CVExperience $experience
-    ):JsonResponse{
+    public function destroy(CV $cv, CVExperience $experience):JsonResponse{
 
         if($experience->cv_id!=$cv->id)
             abort(404);
 
-        $this->service->delete(
-            $experience
-        );
+        $this->service->delete($experience);
 
-        return response()->json([
-            "message"=>"Deleted"
-        ]);
+        return response()->json(["message"=>"Xoá thành công"]);
     }
 }

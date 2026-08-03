@@ -10,17 +10,11 @@ class CVTemplateRepository implements CVTemplateRepositoryInterface
 {
     public function getAll(): Collection
     {
-        return CVTemplate::where(
-            'is_active',
-            true
-        )->get();
+        return CVTemplate::where('is_active', true)->get();
     }
 
     public function findById(int $id): CVTemplate
     {
-        return CVTemplate::where(
-            'is_active',
-            true
-        )->findOrFail($id);
+        return CVTemplate::where('is_active', true)->findOrFail($id);
     }
 }

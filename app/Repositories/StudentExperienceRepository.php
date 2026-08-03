@@ -38,11 +38,7 @@ class StudentExperienceRepository implements StudentExperienceRepositoryInterfac
         ]);
     }
 
-    public function update(
-        User $user,
-        Experience $experience,
-        array $data
-    ): Experience {
+    public function update(User $user, Experience $experience, array $data): Experience {
 
         $experience = $this->findExperienceOfUser(
             $user,
@@ -64,10 +60,7 @@ class StudentExperienceRepository implements StudentExperienceRepositoryInterfac
         return $experience->fresh();
     }
 
-    public function delete(
-        User $user,
-        Experience $experience
-    ): void {
+    public function delete(User $user, Experience $experience): void {
 
         $experience = $this->findExperienceOfUser(
             $user,
@@ -77,10 +70,7 @@ class StudentExperienceRepository implements StudentExperienceRepositoryInterfac
         $experience->delete();
     }
 
-    private function findExperienceOfUser(
-        User $user,
-        Experience $experience
-    ): Experience {
+    private function findExperienceOfUser(User $user, Experience $experience): Experience {
 
         $profile = CandidateProfile::where(
             'user_id',

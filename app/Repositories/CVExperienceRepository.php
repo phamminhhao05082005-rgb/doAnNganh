@@ -10,37 +10,23 @@ use App\Interfaces\CVExperienceRepositoryInterface;
 class CVExperienceRepository
 implements CVExperienceRepositoryInterface
 {
-    public function getAll(
-        CV $cv
-    ): Collection
+    public function getAll(CV $cv): Collection
     {
-        return $cv->experiences()
-            ->latest()
-            ->get();
+        return $cv->experiences()->latest()->get();
     }
 
-    public function create(
-        CV $cv,
-        array $data
-    ): CVExperience
+    public function create(CV $cv, array $data): CVExperience
     {
-        return $cv->experiences()
-            ->create($data);
+        return $cv->experiences()->create($data);
     }
 
-    public function update(
-        CVExperience $experience,
-        array $data
-    ): CVExperience
+    public function update(CVExperience $experience, array $data): CVExperience
     {
         $experience->update($data);
-
         return $experience->refresh();
     }
 
-    public function delete(
-        CVExperience $experience
-    ): void
+    public function delete(CVExperience $experience): void
     {
         $experience->delete();
     }

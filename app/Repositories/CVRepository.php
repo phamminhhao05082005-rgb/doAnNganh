@@ -9,46 +9,29 @@ use App\Interfaces\CVRepositoryInterface;
 class CVRepository
 implements CVRepositoryInterface
 {
-    public function getMyCVs(
-        int $userId
-    ): Collection
+    public function getMyCVs(int $userId): Collection
     {
         return CV::with('template')
-            ->where(
-                'user_id',
-                $userId
-            )
-            ->latest()
-            ->get();
+            ->where('user_id', $userId)->latest()->get();
     }
 
-    public function findById(
-        int $id
-    ): CV
+    public function findById(int $id): CV
     {
         return CV::findOrFail($id);
     }
 
-    public function create(
-        array $data
-    ): CV
+    public function create(array $data): CV
     {
         return CV::create($data);
     }
 
-    public function update(
-        CV $cv,
-        array $data
-    ): CV
+    public function update(CV $cv, array $data): CV
     {
         $cv->update($data);
-
         return $cv->refresh();
     }
 
-    public function delete(
-        CV $cv
-    ): bool
+    public function delete(CV $cv): bool
     {
         return $cv->delete();
     }

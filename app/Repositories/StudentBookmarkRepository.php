@@ -22,19 +22,12 @@ class StudentBookmarkRepository implements StudentBookmarkRepositoryInterface
             ->get();
     }
 
-    public function bookmark(
-        User $user,
-        Job $job
-    ): void {
-
+    public function bookmark(User $user, Job $job): void {
         $user->bookmarkedJobs()
             ->syncWithoutDetaching([$job->id]);
     }
 
-    public function unBookmark(
-        User $user,
-        Job $job
-    ): void {
+    public function unBookmark(User $user, Job $job): void {
 
         $user->bookmarkedJobs()
             ->detach($job->id);

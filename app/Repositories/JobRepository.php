@@ -125,10 +125,7 @@ class JobRepository implements JobRepositoryInterface
         ]);
     }
 
-    public function update(
-        Job $job,
-        array $data
-    ): Job {
+    public function update(Job $job, array $data): Job {
 
         $job->update($data);
 

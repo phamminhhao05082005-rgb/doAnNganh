@@ -21,9 +21,6 @@ class StudentEducationController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * Danh sách học vấn của sinh viên
-     */
     public function index(Request $request): AnonymousResourceCollection
     {
         return StudentEducationResource::collection(
@@ -31,50 +28,20 @@ class StudentEducationController extends Controller
         );
     }
 
-    /**
-     * Thêm học vấn
-     */
     public function store(StoreEducationRequest $request): StudentEducationResource
     {
         return new StudentEducationResource(
-            $this->service->create(
-                $request->user(),
-                $request->validated()
-            )
-        );
+            $this->service->create($request->user(), $request->validated()));
     }
 
-    /**
-     * Cập nhật học vấn
-     */
-    public function update(
-        UpdateEducationRequest $request,
-        Education $education
-    ): StudentEducationResource {
+    public function update(UpdateEducationRequest $request, Education $education): StudentEducationResource {
 
         return new StudentEducationResource(
-            $this->service->update(
-                $request->user(),
-                $education,
-                $request->validated()
-            )
-        );
+            $this->service->update($request->user(), $education, $request->validated()));
     }
 
-    /**
-     * Xóa học vấn
-     */
-    public function destroy(
-        Request $request,
-        Education $education
-    ) {
-        $this->service->delete(
-            $request->user(),
-            $education
-        );
-
-        return response()->json([
-            'message' => 'Xóa học vấn thành công.'
-        ]);
+    public function destroy(Request $request, Education $education) {
+        $this->service->delete($request->user(), $education);
+        return response()->json(['message' => 'Xóa học vấn thành công.']);
     }
 }

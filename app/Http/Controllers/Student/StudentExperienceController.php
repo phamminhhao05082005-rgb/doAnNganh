@@ -21,41 +21,20 @@ class StudentExperienceController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * Danh sách kinh nghiệm
-     */
-    public function index(
-        Request $request
-    ): AnonymousResourceCollection {
+    public function index(Request $request): AnonymousResourceCollection {
 
         return StudentExperienceResource::collection(
-            $this->service->getAll(
-                $request->user()
-            )
-        );
+            $this->service->getAll($request->user()));
     }
 
-    /**
-     * Thêm kinh nghiệm
-     */
-    public function store(
-        StoreExperienceRequest $request
-    ) {
+    public function store(StoreExperienceRequest $request) {
 
         return response()->json([
             'message' => 'Thêm kinh nghiệm thành công.',
             'data' => new StudentExperienceResource(
-                $this->service->create(
-                    $request->user(),
-                    $request->validated()
-                )
-            )
-        ], 201);
+                $this->service->create($request->user(), $request->validated()))], 201);
     }
 
-    /**
-     * Cập nhật kinh nghiệm
-     */
     public function update(
         UpdateExperienceRequest $request,
         Experience $experience
@@ -64,30 +43,12 @@ class StudentExperienceController extends Controller
         return response()->json([
             'message' => 'Cập nhật kinh nghiệm thành công.',
             'data' => new StudentExperienceResource(
-                $this->service->update(
-                    $request->user(),
-                    $experience,
-                    $request->validated()
-                )
-            )
-        ]);
+                $this->service->update($request->user(), $experience, $request->validated()))]);
     }
 
-    /**
-     * Xóa kinh nghiệm
-     */
-    public function destroy(
-        Request $request,
-        Experience $experience
-    ) {
+    public function destroy(Request $request, Experience $experience) {
 
-        $this->service->delete(
-            $request->user(),
-            $experience
-        );
-
-        return response()->json([
-            'message' => 'Xóa kinh nghiệm thành công.'
-        ]);
+        $this->service->delete($request->user(), $experience);
+        return response()->json(['message' => 'Xóa kinh nghiệm thành công.']);
     }
 }
