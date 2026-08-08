@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobDetailResource extends JsonResource
 {
-    
+
     public function toArray(Request $request): array
     {
         return [
@@ -43,6 +44,14 @@ class JobDetailResource extends JsonResource
             }),
 
             'bookmarked' => $this->bookmarkedUsers->isNotEmpty(),
+
+            'applied' => auth()->check()
+                && auth()->user()->role->name === 'STUDENT'
+                && Application::where('job_id', $this->id)
+                ->whereHas('cv', function ($q) {
+                    $q->where('user_id', auth()->id());
+                })
+                ->exists(),
         ];
     }
 }

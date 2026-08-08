@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Interfaces\ApplicationRepositoryInterface;
+use App\Interfaces\ApplicationServiceInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
@@ -49,9 +51,11 @@ use App\Services\StudentProfileService;
 use App\Interfaces\CVTemplateRepositoryInterface;
 use App\Repositories\CVTemplateRepository;
 use App\Interfaces\CVTemplateServiceInterface;
+use App\Repositories\ApplicationRepository;
 use App\Repositories\CVEducationRepository;
 use App\Repositories\CVExperienceRepository;
 use App\Repositories\CVRepository;
+use App\Services\ApplicationService;
 use App\Services\CVEducationService;
 use App\Services\CVExperienceService;
 use App\Services\CVService;
@@ -91,6 +95,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CVEducationServiceInterface::class, CVEducationService::class);
         $this->app->bind(CVExperienceRepositoryInterface::class, CVExperienceRepository::class);
         $this->app->bind(CVExperienceServiceInterface::class, CVExperienceService::class);
+        $this->app->bind(ApplicationRepositoryInterface::class, ApplicationRepository::class);
+        $this->app->bind(ApplicationServiceInterface::class, ApplicationService::class);
     }
 
     /**

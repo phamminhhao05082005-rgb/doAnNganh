@@ -16,6 +16,7 @@ use App\Http\Controllers\Student\StudentProfileController;
 use App\Http\Controllers\Student\StudentEducationController;
 use App\Http\Controllers\Student\StudentExperienceController;
 use App\Http\Controllers\Student\StudentBookmarkController;
+use App\Http\Controllers\ApplicationController;
 
 Route::prefix('auth')->group(function () {
 
@@ -59,123 +60,77 @@ Route::prefix('auth')->group(function () {
             Route::apiResource('jobs', EmployerJobController::class);
 
             Route::get('/myJobs', [EmployerJobController::class, 'getJobsOfCompany']);
+
+            Route::get(
+                '/jobs/{jobId}/applications',
+                [ApplicationController::class, 'jobApplications']
+            );
+
+            Route::put(
+                '/applications/{id}/status',
+                [ApplicationController::class, 'updateStatus']
+            );
         });
 
         Route::middleware('role:STUDENT')
             ->prefix('student')
             ->group(function () {
 
-                Route::get(
-                    '/profile',
-                    [StudentProfileController::class, 'show']
-                );
+                Route::get('/profile', [StudentProfileController::class, 'show']);
 
-                Route::put(
-                    '/profile',
-                    [StudentProfileController::class, 'update']
-                );
+                Route::put('/profile', [StudentProfileController::class, 'update']);
 
-                // Education
                 Route::get('/educations', [StudentEducationController::class, 'index']);
                 Route::post('/educations', [StudentEducationController::class, 'store']);
                 Route::put('/educations/{education}', [StudentEducationController::class, 'update']);
                 Route::delete('/educations/{education}', [StudentEducationController::class, 'destroy']);
 
-                // Experience
                 Route::get('/experiences', [StudentExperienceController::class, 'index']);
                 Route::post('/experiences', [StudentExperienceController::class, 'store']);
                 Route::put('/experiences/{experience}', [StudentExperienceController::class, 'update']);
                 Route::delete('/experiences/{experience}', [StudentExperienceController::class, 'destroy']);
 
-                Route::get(
-                    '/bookmarks',
-                    [StudentBookmarkController::class, 'index']
-                );
+                Route::get('/bookmarks', [StudentBookmarkController::class, 'index']);
 
-                Route::post(
-                    '/bookmarks/{job}',
-                    [StudentBookmarkController::class, 'store']
-                );
+                Route::post('/bookmarks/{job}', [StudentBookmarkController::class, 'store']);
 
-                Route::delete(
-                    '/bookmarks/{job}',
-                    [StudentBookmarkController::class, 'destroy']
-                );
+                Route::delete('/bookmarks/{job}', [StudentBookmarkController::class, 'destroy']);
 
-                Route::get(
-                    '/cv-templates',
-                    [CVTemplateController::class, 'index']
-                );
+                Route::get('/cv-templates', [CVTemplateController::class, 'index']);
 
-                Route::get(
-                    '/cv-templates/{id}',
-                    [CVTemplateController::class, 'show']
-                );
+                Route::get('/cv-templates/{id}', [CVTemplateController::class, 'show']);
 
-                Route::get(
-                    '/cvs',
-                    [CVController::class, 'index']
-                );
+                Route::get('/cvs', [CVController::class, 'index']);
 
-                Route::get(
-                    '/cvs/{id}',
-                    [CVController::class, 'show']
-                );
+                Route::get('/cvs/{id}', [CVController::class, 'show']);
 
-                Route::post(
-                    '/cvs',
-                    [CVController::class, 'store']
-                );
+                Route::post('/cvs', [CVController::class, 'store']);
 
-                Route::put(
-                    '/cvs/{id}',
-                    [CVController::class, 'update']
-                );
+                Route::put('/cvs/{id}', [CVController::class, 'update']);
 
-                Route::delete(
-                    '/cvs/{id}',
-                    [CVController::class, 'destroy']
-                );
+                Route::delete('/cvs/{id}', [CVController::class, 'destroy']);
 
-                Route::get(
-                    "/cvs/{cv}/educations",
-                    [CVEducationController::class, "index"]
-                );
+                Route::get("/cvs/{cv}/educations", [CVEducationController::class, "index"]);
 
-                Route::post(
-                    "/cvs/{cv}/educations",
-                    [CVEducationController::class, "store"]
-                );
+                Route::post("/cvs/{cv}/educations", [CVEducationController::class, "store"]);
 
-                Route::put(
-                    "/cvs/{cv}/educations/{education}",
-                    [CVEducationController::class, "update"]
-                );
+                Route::put("/cvs/{cv}/educations/{education}", [CVEducationController::class, "update"]);
 
-                Route::delete(
-                    "/cvs/{cv}/educations/{education}",
-                    [CVEducationController::class, "destroy"]
-                );
+                Route::delete("/cvs/{cv}/educations/{education}", [CVEducationController::class, "destroy"]);
 
-                Route::get(
-                    "/cvs/{cv}/experiences",
-                    [CVExperienceController::class, "index"]
-                );
+                Route::get("/cvs/{cv}/experiences", [CVExperienceController::class, "index"]);
 
-                Route::post(
-                    "/cvs/{cv}/experiences",
-                    [CVExperienceController::class, "store"]
-                );
+                Route::post("/cvs/{cv}/experiences", [CVExperienceController::class, "store"]);
 
-                Route::put(
-                    "/cvs/{cv}/experiences/{experience}",
-                    [CVExperienceController::class, "update"]
-                );
+                Route::put("/cvs/{cv}/experiences/{experience}", [CVExperienceController::class, "update"]);
 
-                Route::delete(
-                    "/cvs/{cv}/experiences/{experience}",
-                    [CVExperienceController::class, "destroy"]
-                );
+                Route::delete("/cvs/{cv}/experiences/{experience}", [CVExperienceController::class, "destroy"]);
+
+                Route::post('/applications', [ApplicationController::class, 'apply']);
+
+                Route::get('/applications', [ApplicationController::class, 'myApplications']);
+
+                Route::delete("/applications/{id}", [ApplicationController::class, "destroy"]);
             });
     });
 });

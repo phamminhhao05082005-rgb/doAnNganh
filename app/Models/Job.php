@@ -55,7 +55,10 @@ class Job extends Model
 
     public function applications(): HasMany
     {
-        return $this->hasMany(Application::class);
+        return $this->hasMany(
+            Application::class,
+            'job_id'
+        );
     }
 
     public function bookmarkedUsers(): BelongsToMany

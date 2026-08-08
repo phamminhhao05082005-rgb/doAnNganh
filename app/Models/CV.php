@@ -77,4 +77,12 @@ class CV extends Model
             'cv_id'
         );
     }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(
+            Application::class,
+            'cv_id'
+        );
+    }
 }

@@ -23,11 +23,17 @@ class Application extends Model
 
     public function job(): BelongsTo
     {
-        return $this->belongsTo(Job::class);
+        return $this->belongsTo(
+            Job::class,
+            'job_id'
+        );
     }
 
     public function cv(): BelongsTo
     {
-        return $this->belongsTo(CV::class);
+        return $this->belongsTo(
+            CV::class,
+            'cv_id'
+        );
     }
 }
