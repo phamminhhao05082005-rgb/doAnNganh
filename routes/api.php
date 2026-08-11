@@ -17,6 +17,17 @@ use App\Http\Controllers\Student\StudentEducationController;
 use App\Http\Controllers\Student\StudentExperienceController;
 use App\Http\Controllers\Student\StudentBookmarkController;
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\NotificationController;
+
+Broadcast::routes([
+    'middleware' => ['auth:sanctum']
+]);
+
+Broadcast::channel('user.{userId}', function ($user, $userId) {
+
+    return (int) $user->id === (int) $userId;
+});
 
 Route::prefix('auth')->group(function () {
 
@@ -35,6 +46,11 @@ Route::prefix('auth')->group(function () {
     );
 
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::get(
+            '/notifications',
+            [NotificationController::class, 'index']
+        );
 
         Route::get('/me', [AuthController::class, 'me']);
 

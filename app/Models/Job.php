@@ -72,4 +72,9 @@ class Job extends Model
             ->using(Bookmark::class)
             ->withTimestamps();
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'job_id');
+    }
 }

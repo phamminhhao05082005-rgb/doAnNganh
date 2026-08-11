@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Events\NotificationCreated;
 use App\Models\Application;
 use App\Models\User;
 use App\Models\Job;
 use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\ApplicationRepositoryInterface;
 use App\Interfaces\ApplicationServiceInterface;
+use App\Models\Notification;
 
 class ApplicationService
 implements ApplicationServiceInterface
@@ -111,7 +113,46 @@ implements ApplicationServiceInterface
             abort(403, 'Bạn không có quyền.');
         }
 
-        return $this->repository->updateStatus($application, $status);
+        $application = $this->repository
+            ->updateStatus(
+                $application,
+                $status
+            );
+
+        $studentId = $application
+            ->cv
+            ->user_id;
+
+        $title = 'Cập nhật hồ sơ ứng tuyển';
+
+        $content = match ($status) {
+            'ACCEPTED' =>
+            'Hồ sơ ứng tuyển của bạn đã được nhà tuyển dụng duyệt.',
+
+            'REJECTED' =>
+            'Hồ sơ ứng tuyển của bạn đã bị từ chối.',
+
+            default =>
+            'Trạng thái hồ sơ ứng tuyển của bạn đã được cập nhật.'
+        };
+
+        $jobId = $application->job_id ?? $application->job->id;
+
+        $notification = Notification::create([
+            'user_id' => $studentId,
+            'job_id'  => $jobId,
+            'title' => $title,
+            'content' => $content,
+            'is_read' => false
+        ]);
+
+        event(
+            new NotificationCreated(
+                $notification
+            )
+        );
+
+        return $application;
     }
 
     public function delete(
