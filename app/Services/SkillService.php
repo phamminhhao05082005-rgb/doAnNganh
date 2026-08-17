@@ -15,4 +15,24 @@ class SkillService implements SkillServiceInterface
     {
         return $this->skillRepository->getAll();
     }
+
+    public function findById($id)
+    {
+        return $this->skillRepository->findById($id);
+    }
+
+    public function create(array $data)
+    {
+        return $this->skillRepository->create($data);
+    }
+
+    public function update($id, array $data)
+    {
+        return $this->skillRepository->update($id, $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->skillRepository->delete($id);
+    }
 }

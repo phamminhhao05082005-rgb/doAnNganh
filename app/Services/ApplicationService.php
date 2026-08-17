@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\ApplicationRepositoryInterface;
 use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Notification;
+use App\Jobs\SendApplicationStatusEmailJob;
 
-class ApplicationService
-implements ApplicationServiceInterface
+class ApplicationService implements ApplicationServiceInterface
 {
     protected ApplicationRepositoryInterface $repository;
 
@@ -119,6 +119,8 @@ implements ApplicationServiceInterface
                 $status
             );
 
+        $candidateUser = $application->cv->user;
+
         $studentId = $application
             ->cv
             ->user_id;
@@ -146,11 +148,11 @@ implements ApplicationServiceInterface
             'is_read' => false
         ]);
 
-        event(
-            new NotificationCreated(
-                $notification
-            )
-        );
+        event(new NotificationCreated($notification));
+
+        if ($candidateUser && $candidateUser->email) {
+            SendApplicationStatusEmailJob::dispatch($application);
+        }
 
         return $application;
     }

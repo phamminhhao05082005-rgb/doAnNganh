@@ -15,4 +15,24 @@ class CategoryService implements CategoryServiceInterface
     {
         return $this->categoryRepository->getAll();
     }
+
+    public function findById($id)
+    {
+        return $this->categoryRepository->findById($id);
+    }
+
+    public function create(array $data)
+    {
+        return $this->categoryRepository->create($data);
+    }
+
+    public function update($id, array $data)
+    {
+        return $this->categoryRepository->update($id, $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->categoryRepository->delete($id);
+    }
 }

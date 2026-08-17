@@ -14,6 +14,13 @@ class Review extends Model
         'comment'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'rating' => 'integer',
+        ];
+    }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

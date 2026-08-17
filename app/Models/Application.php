@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Application extends Model
 {
@@ -34,6 +35,18 @@ class Application extends Model
         return $this->belongsTo(
             CV::class,
             'cv_id'
+        );
+    }
+
+    public function user(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            User::class,
+            CV::class,
+            'id',       
+            'id',       
+            'cv_id',    
+            'user_id' 
         );
     }
 }

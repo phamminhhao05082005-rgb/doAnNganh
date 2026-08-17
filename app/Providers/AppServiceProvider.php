@@ -51,16 +51,21 @@ use App\Services\StudentProfileService;
 use App\Interfaces\CVTemplateRepositoryInterface;
 use App\Repositories\CVTemplateRepository;
 use App\Interfaces\CVTemplateServiceInterface;
+use App\Interfaces\NotificationRepositoryInterface;
+use App\Interfaces\ReviewRepositoryInterface;
+use App\Interfaces\ReviewServiceInterface;
 use App\Repositories\ApplicationRepository;
 use App\Repositories\CVEducationRepository;
 use App\Repositories\CVExperienceRepository;
 use App\Repositories\CVRepository;
+use App\Repositories\NotificationRepository;
+use App\Repositories\ReviewRepository;
 use App\Services\ApplicationService;
 use App\Services\CVEducationService;
 use App\Services\CVExperienceService;
 use App\Services\CVService;
 use App\Services\CVTemplateService;
-
+use App\Services\ReviewService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -97,6 +102,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CVExperienceServiceInterface::class, CVExperienceService::class);
         $this->app->bind(ApplicationRepositoryInterface::class, ApplicationRepository::class);
         $this->app->bind(ApplicationServiceInterface::class, ApplicationService::class);
+        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
+        $this->app->bind(ReviewServiceInterface::class, ReviewService::class);
     }
 
     /**

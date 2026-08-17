@@ -20,6 +20,13 @@ class EmployerCompanyController extends Controller
         );
     }
 
+    public function showById(int $id)
+    {
+        return new CompanyResource(
+            $this->companyService->getById($id)
+        );
+    }
+
     public function update(UpdateMyCompanyRequest $request)
     {
         return new CompanyResource(

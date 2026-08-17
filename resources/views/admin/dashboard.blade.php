@@ -21,27 +21,36 @@
     <div class="card-body">
 
         <h3>
-
             Xin chào Admin
-
         </h3>
 
         <p>
-
             Chào mừng bạn đến hệ thống quản trị.
-
         </p>
 
         <hr>
 
-        <a href="{{ route('admin.companies.index') }}"
-            class="btn btn-primary">
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ route('admin.companies.index') }}" class="btn btn-primary">
+                <i class="bi bi-buildings"></i> Quản lý doanh nghiệp
+            </a>
 
-            <i class="bi bi-buildings"></i>
+            <a href="{{ route('admin.jobs.index') }}" class="btn btn-warning text-dark">
+                <i class="bi bi-briefcase"></i> Quản lý tuyển dụng
+            </a>
 
-            Quản lý doanh nghiệp
+            <a href="{{ route('admin.categories.index') }}" class="btn btn-success">
+                <i class="bi bi-tags"></i> Quản lý danh mục
+            </a>
 
-        </a>
+            <a href="{{ route('admin.skills.index') }}" class="btn btn-info text-white">
+                <i class="bi bi-award"></i> Quản lý kỹ năng
+            </a>
+
+            <a href="{{ route('admin.notifications.create') }}" class="btn btn-purple text-white" style="background-color: #6f42c1;">
+                <i class="bi bi-bell"></i> Gửi thông báo hệ thống
+            </a>
+        </div>
 
     </div>
 

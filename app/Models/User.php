@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -79,5 +80,17 @@ class User extends Authenticatable
     public function cvs(): HasMany
     {
         return $this->hasMany(CV::class);
+    }
+
+    public function applications(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Application::class,
+            CV::class,
+            'user_id', 
+            'cv_id',   
+            'id',      
+            'id'       
+        );
     }
 }

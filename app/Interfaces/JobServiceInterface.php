@@ -20,4 +20,6 @@ interface JobServiceInterface
     ): Job;
 
     public function delete(Job $job): void;
+
+    public function toggleStatus(int $jobId, bool $status): Job;
 }

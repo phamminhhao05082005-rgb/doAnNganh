@@ -19,6 +19,7 @@ use App\Http\Controllers\Student\StudentBookmarkController;
 use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Student\ReviewController;
 
 Broadcast::routes([
     'middleware' => ['auth:sanctum']
@@ -28,6 +29,8 @@ Broadcast::channel('user.{userId}', function ($user, $userId) {
 
     return (int) $user->id === (int) $userId;
 });
+
+Route::get('companies/{companyId}/reviews', [ReviewController::class, 'index']);
 
 Route::prefix('auth')->group(function () {
 
@@ -47,10 +50,14 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
+        Route::get('/companies/{id}', [EmployerCompanyController::class, 'showById']);
+
         Route::get(
             '/notifications',
             [NotificationController::class, 'index']
         );
+
+        Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
         Route::get('/me', [AuthController::class, 'me']);
 
@@ -85,6 +92,11 @@ Route::prefix('auth')->group(function () {
             Route::put(
                 '/applications/{id}/status',
                 [ApplicationController::class, 'updateStatus']
+            );
+
+            Route::get(
+                '/applications/{applicationId}/cv',
+                [ApplicationController::class, 'getCVDetail']
             );
         });
 
@@ -147,6 +159,10 @@ Route::prefix('auth')->group(function () {
                 Route::get('/applications', [ApplicationController::class, 'myApplications']);
 
                 Route::delete("/applications/{id}", [ApplicationController::class, "destroy"]);
+
+                Route::post('reviews', [ReviewController::class, 'store']);
+                Route::put('reviews/{id}', [ReviewController::class, 'update']);
+                Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
             });
     });
 });

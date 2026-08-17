@@ -71,7 +71,8 @@ class JobService implements JobServiceInterface
             ->create($data);
     }
 
-    public function update(Job $job, array $data): Job {
+    public function update(Job $job, array $data): Job
+    {
         $this->checkOwner($job);
         return $this->jobRepository->update($job, $data);
     }
@@ -91,5 +92,16 @@ class JobService implements JobServiceInterface
                 "You cannot access this job."
             );
         }
+    }
+
+    public function toggleStatus(int $jobId, bool $status): Job
+    {
+        $job = $this->jobRepository->findById($jobId);
+
+        if (!$job) {
+            throw new \Exception("Job không tồn tại.");
+        }
+
+        return $this->jobRepository->update($job, ['status' => $status]);
     }
 }

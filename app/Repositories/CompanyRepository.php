@@ -19,7 +19,7 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function findById(int $id): ?Company
     {
-        return Company::withTrashed()->find($id);
+        return Company::withTrashed()->with('owner')->find($id);
     }
 
     public function create(array $userData, array $companyData): Company
