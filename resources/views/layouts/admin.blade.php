@@ -49,6 +49,15 @@
 
                     </a>
 
+                    <a href="{{ route('admin.analytics.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}">
+
+                        <i class="bi bi-graph-up-arrow"></i>
+
+                        Thống kê hệ thống
+
+                    </a>
+
                     <a href="{{ route('admin.companies.index') }}"
                         class="list-group-item list-group-item-action">
 
