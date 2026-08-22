@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Interfaces\StudentExperienceRepositoryInterface;
 use App\Interfaces\StudentExperienceServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class StudentExperienceService implements StudentExperienceServiceInterface
 {
@@ -27,6 +29,7 @@ class StudentExperienceService implements StudentExperienceServiceInterface
         User $user,
         array $data
     ): Experience {
+        $this->checkUserMatch($user);
 
         return $this->repository->create(
             $user,
@@ -39,6 +42,7 @@ class StudentExperienceService implements StudentExperienceServiceInterface
         Experience $experience,
         array $data
     ): Experience {
+        $this->checkOwner($user, $experience);
 
         return $this->repository->update(
             $user,
@@ -51,10 +55,30 @@ class StudentExperienceService implements StudentExperienceServiceInterface
         User $user,
         Experience $experience
     ): void {
+        $this->checkOwner($user, $experience);
 
         $this->repository->delete(
             $user,
             $experience
         );
+    }
+
+    private function checkOwner(User $user, Experience $experience): void
+    {
+        $this->checkUserMatch($user);
+
+        $profile = $user->candidateProfile;
+        if (!$profile || $experience->profile_id !== $profile->id) {
+            throw new Exception("You cannot access or modify this experience record.");
+        }
+    }
+
+    private function checkUserMatch(User $user): void
+    {
+        $currentUser = Auth::user();
+
+        if (!$currentUser || $currentUser->id !== $user->id) {
+            throw new Exception("Unauthorized access.");
+        }
     }
 }

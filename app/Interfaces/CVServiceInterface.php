@@ -27,7 +27,5 @@ interface CVServiceInterface
         array $data
     ): CV;
 
-    public function delete(
-        int $id
-    ): bool;
+    public function delete(User $user, int $id): bool;
 }

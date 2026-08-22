@@ -12,30 +12,28 @@ class Application extends Model
         'job_id',
         'cv_id',
         'status',
-        'applied_at'
+        'applied_at',
+        'ai_score',
+        'ai_evaluation'
     ];
 
     protected function casts(): array
     {
         return [
-            'applied_at' => 'datetime',
+            'applied_at'    => 'datetime',
+            'ai_score'      => 'integer',
+            'ai_evaluation' => 'array'
         ];
     }
 
     public function job(): BelongsTo
     {
-        return $this->belongsTo(
-            Job::class,
-            'job_id'
-        );
+        return $this->belongsTo(Job::class, 'job_id');
     }
 
     public function cv(): BelongsTo
     {
-        return $this->belongsTo(
-            CV::class,
-            'cv_id'
-        );
+        return $this->belongsTo(CV::class, 'cv_id');
     }
 
     public function user(): HasOneThrough

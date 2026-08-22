@@ -11,15 +11,19 @@ use App\Interfaces\ApplicationRepositoryInterface;
 use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Notification;
 use App\Jobs\SendApplicationStatusEmailJob;
+use App\Services\GeminiEvaluationService;
 
 class ApplicationService implements ApplicationServiceInterface
 {
     protected ApplicationRepositoryInterface $repository;
+    protected GeminiEvaluationService $geminiService;
 
     public function __construct(
-        ApplicationRepositoryInterface $repository
+        ApplicationRepositoryInterface $repository,
+        GeminiEvaluationService $geminiService
     ) {
         $this->repository = $repository;
+        $this->geminiService = $geminiService;
     }
 
     public function apply(
@@ -185,5 +189,41 @@ class ApplicationService implements ApplicationServiceInterface
 
         $this->repository
             ->delete($application);
+    }
+
+    public function evaluateApplicationsByJob(User $user, int $jobId, bool $forceReevaluate = false): Collection
+    {
+        $job = Job::where('id', $jobId)
+            ->whereHas('company', function ($q) use ($user) {
+                $q->where('owner_id', $user->id);
+            })->firstOrFail();
+
+        $query = Application::with([
+            'cv.educations',
+            'cv.experiences',
+            'job.skills',
+            'job.company'
+        ])->where('job_id', $job->id);
+
+        if (!$forceReevaluate) {
+            $query->whereNull('ai_score');
+        }
+
+        $applications = $query->get();
+
+        foreach ($applications as $application) {
+            $result = $this->geminiService->evaluateApplication($application);
+
+            $application->update([
+                'ai_score'      => $result['score'],
+                'ai_evaluation' => $result['evaluation']
+            ]);
+        }
+
+        return Application::with(['cv', 'job'])
+            ->where('job_id', $job->id)
+            ->orderByRaw('ai_score IS NULL ASC')
+            ->orderBy('ai_score', 'desc')
+            ->get();
     }
 }

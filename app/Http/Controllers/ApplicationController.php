@@ -9,6 +9,7 @@ use App\Http\Resources\CVResource;
 use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ApplicationController extends Controller
 {
@@ -102,14 +103,34 @@ class ApplicationController extends Controller
             ], 403);
         }
 
-        $cv = $application->cv;
-
-        if (!$cv) {
+        if (!$application->cv) {
             return response()->json([
                 'message' => 'Không tìm thấy CV liên kết với đơn ứng tuyển này.'
             ], 404);
         }
 
-        return new CVResource($cv);
+        return new ApplicationResource($application);
+    }
+
+    public function evaluateJobCvs(Request $request, int $jobId): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            $force = $request->boolean('force', false);
+
+            $result = $this->service->evaluateApplicationsByJob($user, $jobId, $force);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Đánh giá danh sách CV thành công.',
+                'data'    => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

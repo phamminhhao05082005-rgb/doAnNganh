@@ -17,7 +17,7 @@ class CVController extends Controller
 
     public function __construct(CVServiceInterface $service)
     {
-        $this->service=$service;
+        $this->service = $service;
     }
 
     public function index(Request $request)
@@ -35,7 +35,8 @@ class CVController extends Controller
     public function store(StoreCVRequest $request)
     {
         return new CVResource(
-            $this->service->create($request->user(), $request->validated()));
+            $this->service->create($request->user(), $request->validated())
+        );
     }
 
     public function update(UpdateCVRequest $request, int $id)
@@ -45,9 +46,9 @@ class CVController extends Controller
         );
     }
 
-    public function destroy(int $id)
+    public function destroy(Request $request, int $id)
     {
-        $this->service->delete($id);
-        return response()->json(['message'=>'Đã xóa CV']);
+        $this->service->delete($request->user(), $id);
+        return response()->json(['message' => 'Đã xóa CV']);
     }
 }

@@ -31,12 +31,10 @@ class NotificationService
 
     public function sendNotificationToAll(string $title, string $content, ?string $role = null): int
     {
-        // 1. Lấy danh sách ID người nhận (Loại trừ tài khoản ADMIN)
         $query = User::whereHas('role', function ($q) {
             $q->where('name', '!=', 'ADMIN');
         });
 
-        // 2. Lọc theo vai trò cụ thể (STUDENT hoặc EMPLOYER) nếu có
         if ($role) {
             $query->whereHas('role', function ($q) use ($role) {
                 $q->where('name', $role);

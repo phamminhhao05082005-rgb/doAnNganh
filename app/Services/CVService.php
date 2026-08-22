@@ -148,13 +148,14 @@ implements CVServiceInterface
             ->update($cv, $data);
     }
 
-    public function delete(
-        int $id
-    ): bool {
-        $cv = $this->repository
-            ->findById($id);
+    public function delete(User $user, int $id): bool
+    {
+        $cv = $this->repository->findById($id);
 
-        return $this->repository
-            ->delete($cv);
+        if ($cv->user_id !== $user->id) {
+            abort(403, 'Bạn không có quyền xóa CV này.');
+        }
+
+        return $this->repository->delete($cv);
     }
 }

@@ -32,4 +32,6 @@ interface ApplicationServiceInterface
         User $user,
         int $applicationId
     ): void;
+
+    public function evaluateApplicationsByJob(User $user, int $jobId, bool $forceReevaluate = false): Collection;
 }

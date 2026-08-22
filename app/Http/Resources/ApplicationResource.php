@@ -15,6 +15,10 @@ class ApplicationResource extends JsonResource
 
             'status' => $this->status,
 
+            'ai_score' => $this->ai_score,
+
+            'ai_evaluation' => $this->ai_evaluation,
+
             'applied_at' => $this->applied_at,
 
             'job' => [
@@ -41,27 +45,7 @@ class ApplicationResource extends JsonResource
 
             ],
 
-            'cv' => [
-
-                'id' => $this->cv?->id,
-
-                'title' => $this->cv?->title,
-
-                'full_name' => $this->cv?->full_name,
-
-                'email' => $this->cv?->email,
-
-                'phone' => $this->cv?->phone,
-
-                'avatar' => $this->cv?->avatar,
-
-                'job_title' => $this->cv?->job_title,
-
-                'experience_year' => $this->cv?->experience_year,
-
-                'expected_salary' => $this->cv?->expected_salary
-
-            ]
+            'cv' => $this->cv ? new CvResource($this->cv) : null
 
         ];
     }
