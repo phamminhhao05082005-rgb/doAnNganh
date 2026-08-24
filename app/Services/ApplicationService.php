@@ -12,6 +12,7 @@ use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Notification;
 use App\Jobs\SendApplicationStatusEmailJob;
 use App\Services\GeminiEvaluationService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ApplicationService implements ApplicationServiceInterface
 {
@@ -59,49 +60,27 @@ class ApplicationService implements ApplicationServiceInterface
     }
 
     public function getMyApplications(
-        User $user
-    ): Collection {
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator {
 
         return $this->repository
-            ->getMyApplications($user);
+            ->getMyApplications($user, $perPage);
+    }
+
+    public function getApplicationsOfEmployer(
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator {
+        return $this->repository->getApplicationsOfEmployer($user, $perPage);
     }
 
     public function getJobApplications(
         User $user,
-        int $jobId
-    ): Collection {
-
-        $job = Job::where(
-            'id',
-            $jobId
-        )
-            ->whereHas(
-                'company',
-                function ($q) use ($user) {
-
-                    $q->where(
-                        'owner_id',
-                        $user->id
-                    );
-                }
-            )
-            ->firstOrFail();
-
-        return Application::with([
-
-            'cv.educations',
-
-            'cv.experiences',
-
-            'job.company'
-
-        ])
-            ->where(
-                'job_id',
-                $job->id
-            )
-            ->latest()
-            ->get();
+        int $jobId,
+        int $perPage = 10
+    ): LengthAwarePaginator {
+        return $this->repository->getJobApplications($user, $jobId, $perPage);
     }
 
     public function updateStatus(

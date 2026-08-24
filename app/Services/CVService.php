@@ -9,6 +9,7 @@ use App\Interfaces\CVServiceInterface;
 use App\Interfaces\CVRepositoryInterface;
 use App\Models\CVEducation;
 use App\Models\CVExperience;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class CVService
@@ -22,11 +23,10 @@ implements CVServiceInterface
         $this->repository = $repository;
     }
 
-    public function getMyCVs(
-        User $user
-    ): Collection {
+    public function getMyCVs(User $user, int $perPage = 10): LengthAwarePaginator
+    {
         return $this->repository
-            ->getMyCVs($user->id);
+            ->getMyCVs($user->id, $perPage);
     }
 
     public function findById(int $id): CV

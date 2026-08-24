@@ -10,6 +10,7 @@ use App\Http\Requests\StoreCVRequest;
 use App\Http\Requests\UpdateCVRequest;
 use App\Http\Resources\CVResource;
 use App\Interfaces\CVServiceInterface;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CVController extends Controller
 {
@@ -20,10 +21,12 @@ class CVController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
+        $perPage = $request->input('per_page', 6);
+
         return CVResource::collection(
-            $this->service->getMyCVs($request->user())
+            $this->service->getMyCVs($request->user(), $perPage)
         );
     }
 

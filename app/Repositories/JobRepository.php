@@ -4,11 +4,12 @@ namespace App\Repositories;
 
 use App\Interfaces\JobRepositoryInterface;
 use App\Models\Job;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class JobRepository implements JobRepositoryInterface
 {
-    public function getMyJobs(int $companyId)
+    public function getMyJobs(int $companyId, int $perPage = 10): LengthAwarePaginator
     {
         return Job::with([
             'category',
@@ -16,7 +17,7 @@ class JobRepository implements JobRepositoryInterface
         ])
             ->where('company_id', $companyId)
             ->latest()
-            ->get();
+            ->paginate($perPage);
     }
 
     public function getAllJobs(array $filters = [])
@@ -90,7 +91,7 @@ class JobRepository implements JobRepositoryInterface
 
         return $query
             ->latest()
-            ->paginate(3);
+            ->paginate(6);
     }
 
 
@@ -125,7 +126,8 @@ class JobRepository implements JobRepositoryInterface
         ]);
     }
 
-    public function update(Job $job, array $data): Job {
+    public function update(Job $job, array $data): Job
+    {
 
         $job->update($data);
 

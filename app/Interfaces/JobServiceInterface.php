@@ -3,10 +3,11 @@
 namespace App\Interfaces;
 
 use App\Models\Job;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface JobServiceInterface
 {
-    public function getMyJobs();
+     public function getMyJobs(int $perPage = 10): LengthAwarePaginator;
 
     public function getAllJobs();
 

@@ -35,6 +35,8 @@ class CVResource extends JsonResource
 
             'status' => $this->status,
 
+            'created_at' => $this->created_at,
+
             'template' => [
 
                 'id' => $this->template->id,

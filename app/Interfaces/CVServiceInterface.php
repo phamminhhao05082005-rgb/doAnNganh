@@ -4,13 +4,12 @@ namespace App\Interfaces;
 
 use App\Models\CV;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 interface CVServiceInterface
 {
-    public function getMyCVs(
-        User $user
-    ): Collection;
+    public function getMyCVs(User $user, int $perPage = 10): LengthAwarePaginator;
 
     public function findById(
         int $id

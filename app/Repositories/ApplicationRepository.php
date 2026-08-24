@@ -7,6 +7,7 @@ use App\Models\CV;
 use App\Models\Job;
 use App\Models\User;
 use App\Interfaces\ApplicationRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -68,62 +69,58 @@ implements ApplicationRepositoryInterface
     }
 
     public function getMyApplications(
-        User $user
-    ): Collection {
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator {
 
         return Application::with([
-
             'job.company',
-
             'cv'
-
         ])
-            ->whereHas(
-                'cv',
-                function ($q) use ($user) {
-
-                    $q->where(
-                        'user_id',
-                        $user->id
-                    );
-                }
-            )
+            ->whereHas('cv', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
             ->latest()
-            ->get();
+            ->paginate($perPage);
     }
 
     public function getApplicationsOfEmployer(
-        User $user
-    ): Collection {
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator {
+        return Application::with([
+            'job.company',
+            'cv.educations',
+            'cv.experiences'
+        ])
+            ->whereHas('job.company', function ($q) use ($user) {
+                $q->where('owner_id', $user->id);
+            })
+            ->latest()
+            ->paginate($perPage);
+    }
+
+    public function getJobApplications(
+        User $user,
+        int $jobId,
+        int $perPage = 10
+    ): LengthAwarePaginator {
+        $job = Job::where('id', $jobId)
+            ->whereHas('company', function ($q) use ($user) {
+                $q->where('owner_id', $user->id);
+            })
+            ->firstOrFail();
 
         return Application::with([
-
-            'job.company',
-
             'cv.educations',
-
-            'cv.experiences'
-
+            'cv.experiences',
+            'job.company'
         ])
-            ->whereHas(
-                'job',
-                function ($q) use ($user) {
-
-                    $q->whereHas(
-                        'company',
-                        function ($qq) use ($user) {
-
-                            $qq->where(
-                                'owner_id',
-                                $user->id
-                            );
-                        }
-                    );
-                }
-            )
+            ->where('job_id', $job->id)
             ->latest()
-            ->get();
+            ->paginate($perPage);
     }
+
 
     public function updateStatus(
         Application $application,

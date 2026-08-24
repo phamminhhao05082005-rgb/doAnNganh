@@ -9,6 +9,7 @@ use App\Interfaces\JobServiceInterface;
 use App\Models\Job;
 use App\Http\Resources\JobDetailResource;
 use App\Http\Resources\JobListResource;
+use Illuminate\Http\Request;
 
 class EmployerJobController extends Controller
 {
@@ -16,13 +17,13 @@ class EmployerJobController extends Controller
         private JobServiceInterface $jobService
     ) {}
 
-    public function getJobsOfCompany()
+    public function getJobsOfCompany(Request $request)
     {
-        return response()->json([
-            'data' => JobListResource::collection(
-                $this->jobService->getMyJobs()
-            )
-        ]);
+        $perPage = $request->input('per_page', 10);
+
+        return JobListResource::collection(
+            $this->jobService->getMyJobs($perPage)
+        );
     }
 
     public function store(CreateJobRequest $request)

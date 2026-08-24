@@ -10,6 +10,7 @@ use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApplicationController extends Controller
 {
@@ -34,27 +35,30 @@ class ApplicationController extends Controller
         );
     }
 
-    public function myApplications()
+    public function myApplications(Request $request): AnonymousResourceCollection
     {
+        $perPage = $request->input('per_page', 6);
+
         return ApplicationResource::collection(
-
             $this->service->getMyApplications(
-                auth()->user()
+                $request->user(),
+                $perPage
             )
-
         );
     }
 
     public function jobApplications(
+        Request $request,
         int $jobId
-    ) {
+    ): AnonymousResourceCollection {
+        $perPage = $request->input('per_page', 10);
+
         return ApplicationResource::collection(
-
             $this->service->getJobApplications(
-                auth()->user(),
-                $jobId
+                $request->user(),
+                $jobId,
+                $perPage
             )
-
         );
     }
 

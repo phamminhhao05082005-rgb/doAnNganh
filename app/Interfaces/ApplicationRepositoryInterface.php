@@ -4,6 +4,7 @@ namespace App\Interfaces;
 
 use App\Models\Application;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 interface ApplicationRepositoryInterface
@@ -14,12 +15,20 @@ interface ApplicationRepositoryInterface
     ): Application;
 
     public function getMyApplications(
-        User $user
-    ): Collection;
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator;
 
     public function getApplicationsOfEmployer(
-        User $user
-    ): Collection;
+        User $user,
+        int $perPage = 10
+    ): LengthAwarePaginator;
+
+    public function getJobApplications(
+        User $user,
+        int $jobId,
+        int $perPage = 10
+    ): LengthAwarePaginator;
 
     public function updateStatus(
         Application $application,

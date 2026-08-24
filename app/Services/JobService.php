@@ -6,6 +6,7 @@ use App\Interfaces\JobRepositoryInterface;
 use App\Interfaces\JobServiceInterface;
 use App\Models\Job;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class JobService implements JobServiceInterface
@@ -14,10 +15,10 @@ class JobService implements JobServiceInterface
         private JobRepositoryInterface $jobRepository
     ) {}
 
-    public function getMyJobs()
+    public function getMyJobs(int $perPage = 10): LengthAwarePaginator
     {
         $companyId = Auth::user()->company->id;
-        return $this->jobRepository->getMyJobs($companyId);
+        return $this->jobRepository->getMyJobs($companyId, $perPage);
     }
 
     public function getAllJobs(array $filters = [])

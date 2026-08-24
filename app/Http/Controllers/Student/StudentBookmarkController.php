@@ -19,19 +19,24 @@ class StudentBookmarkController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request): AnonymousResourceCollection {
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        $perPage = $request->input('per_page', 6);
 
         return StudentBookmarkResource::collection(
-            $this->service->getAll($request->user()));
+            $this->service->getAll($request->user(), $perPage)
+        );
     }
 
-    public function store(Request $request, Job $job) {
+    public function store(Request $request, Job $job)
+    {
 
         $this->service->bookmark($request->user(), $job);
         return response()->json(['message' => 'Lưu việc làm thành công.']);
     }
 
-    public function destroy(Request $request, Job $job) {
+    public function destroy(Request $request, Job $job)
+    {
 
         $this->service->unBookmark($request->user(), $job);
         return response()->json(['message' => 'Đã bỏ lưu việc làm.']);

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StudentBookmarkService implements StudentBookmarkServiceInterface
 {
@@ -20,10 +21,10 @@ class StudentBookmarkService implements StudentBookmarkServiceInterface
         $this->repository = $repository;
     }
 
-    public function getAll(User $user): Collection
+    public function getAll(User $user, int $perPage = 6): LengthAwarePaginator
     {
         $this->checkOwner($user);
-        return $this->repository->getAll($user);
+        return $this->repository->getAll($user, $perPage);
     }
 
     public function bookmark(
