@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SkillRequest;
 use App\Interfaces\SkillServiceInterface;
+use Illuminate\Http\Request;
 
 class AdminSkillController extends Controller
 {
     public function __construct(private SkillServiceInterface $skillService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $skills = $this->skillService->getAll();
+        $skills = $this->skillService->getAll($request->all());
         return view('admin.skills.index', compact('skills'));
     }
 

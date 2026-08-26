@@ -13,7 +13,20 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table table-bordered table-hover">
+        {{-- Form tìm kiếm --}}
+        <form method="GET" action="{{ route('admin.skills.index') }}" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="keyword" class="form-control" placeholder="Tìm theo tên kỹ năng..." value="{{ request('keyword') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Lọc
+                </button>
+            </div>
+        </form>
+
+        {{-- Bảng danh sách --}}
+        <table class="table table-bordered table-hover align-middle">
             <thead>
                 <tr>
                     <th width="80">ID</th>
@@ -22,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($skills as $skill)
+                @forelse($skills as $skill)
                 <tr>
                     <td>{{ $skill->id }}</td>
                     <td>{{ $skill->name }}</td>
@@ -57,9 +70,38 @@
                         </form>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Không tìm thấy kỹ năng nào.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
+        {{-- Thanh Phân Trang --}}
+        @if($skills->hasPages())
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            {{-- Nút Prev --}}
+            @if ($skills->onFirstPage())
+                <button class="btn btn-outline-secondary me-2" disabled>Prev</button>
+            @else
+                <a href="{{ $skills->appends(request()->query())->previousPageUrl() }}" class="btn btn-outline-primary me-2">Prev</a>
+            @endif
+
+            {{-- Thông tin Trang hiện tại --}}
+            <span class="btn btn-primary disabled" style="opacity: 1;">
+                Page {{ $skills->currentPage() }} / {{ $skills->lastPage() }}
+            </span>
+
+            {{-- Nút Next --}}
+            @if ($skills->hasMorePages())
+                <a href="{{ $skills->appends(request()->query())->nextPageUrl() }}" class="btn btn-outline-primary ms-2">Next</a>
+            @else
+                <button class="btn btn-outline-secondary ms-2" disabled>Next</button>
+            @endif
+        </div>
+        @endif
+
     </div>
 </div>
 

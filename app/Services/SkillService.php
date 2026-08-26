@@ -11,9 +11,9 @@ class SkillService implements SkillServiceInterface
         private SkillRepositoryInterface $skillRepository
     ) {}
 
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return $this->skillRepository->getAll();
+        return $this->skillRepository->getAll($filters);
     }
 
     public function findById($id)

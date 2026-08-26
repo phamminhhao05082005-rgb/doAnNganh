@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface SkillRepositoryInterface
 {
-    public function getAll();
+    public function getAll(array $filters = []);
     public function findById($id);
     public function create(array $data);
     public function update($id, array $data);

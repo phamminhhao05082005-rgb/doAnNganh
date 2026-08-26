@@ -11,9 +11,9 @@ class CategoryService implements CategoryServiceInterface
         private CategoryRepositoryInterface $categoryRepository
     ) {}
 
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return $this->categoryRepository->getAll();
+        return $this->categoryRepository->getAll($filters);
     }
 
     public function findById($id)

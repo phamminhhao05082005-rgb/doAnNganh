@@ -7,9 +7,13 @@ use App\Models\Skill;
 
 class SkillRepository implements SkillRepositoryInterface
 {
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return Skill::orderBy('name')->get();
+        $query = Skill::query();
+        if (!empty($filters['keyword'])) {
+            $query->where('name', 'like', "%" . $filters['keyword'] . "%");
+        }
+        return $query->orderBy('name')->paginate(10);
     }
 
     public function findById($id)

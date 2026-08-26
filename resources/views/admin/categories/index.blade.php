@@ -13,7 +13,19 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table table-bordered table-hover">
+        {{-- Form tìm kiếm --}}
+        <form method="GET" action="{{ route('admin.categories.index') }}" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="keyword" class="form-control" placeholder="Tìm theo tên danh mục..." value="{{ request('keyword') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Lọc
+                </button>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover align-middle">
             <thead>
                 <tr>
                     <th width="80">ID</th>
@@ -22,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($categories as $category)
+                @forelse($categories as $category)
                 <tr>
                     <td>{{ $category->id }}</td>
                     <td>{{ $category->name }}</td>
@@ -57,9 +69,38 @@
                         </form>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Không tìm thấy danh mục nào.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
+        {{-- Thanh Phân Trang --}}
+        @if($categories->hasPages())
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            {{-- Nút Prev --}}
+            @if ($categories->onFirstPage())
+                <button class="btn btn-outline-secondary me-2" disabled>Prev</button>
+            @else
+                <a href="{{ $categories->appends(request()->query())->previousPageUrl() }}" class="btn btn-outline-primary me-2">Prev</a>
+            @endif
+
+            {{-- Thông tin Trang hiện tại --}}
+            <span class="btn btn-primary disabled" style="opacity: 1;">
+                Page {{ $categories->currentPage() }} / {{ $categories->lastPage() }}
+            </span>
+
+            {{-- Nút Next --}}
+            @if ($categories->hasMorePages())
+                <a href="{{ $categories->appends(request()->query())->nextPageUrl() }}" class="btn btn-outline-primary ms-2">Next</a>
+            @else
+                <button class="btn btn-outline-secondary ms-2" disabled>Next</button>
+            @endif
+        </div>
+        @endif
+
     </div>
 </div>
 

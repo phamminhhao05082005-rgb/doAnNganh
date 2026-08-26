@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface SkillServiceInterface
 {
-    public function getAll();
+    public function getAll(array $filters = []);
 }

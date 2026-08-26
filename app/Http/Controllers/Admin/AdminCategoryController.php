@@ -5,14 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Interfaces\CategoryServiceInterface;
+use Illuminate\Http\Request;
 
 class AdminCategoryController extends Controller
 {
     public function __construct(private CategoryServiceInterface $categoryService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->categoryService->getAll();
+        $categories = $this->categoryService->getAll($request->all());
+
         return view('admin.categories.index', compact('categories'));
     }
 

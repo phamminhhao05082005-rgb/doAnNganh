@@ -7,9 +7,13 @@ use App\Models\Category;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return Category::orderBy('name')->get();
+        $query = Category::query();
+        if (!empty($filters['keyword'])) {
+            $query->where('name', 'like', "%" . $filters['keyword'] . "%");
+        }
+        return $query->orderBy('name')->paginate(10);
     }
 
     public function findById($id)
