@@ -90,6 +90,12 @@
                         <i class="bi bi-briefcase"></i> Quản lý tin tuyển dụng
                     </a>
 
+                    <a href="{{ route('admin.reviews.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                        <i class="bi bi-star-half"></i> 
+                        Quản lý đánh giá
+                    </a>
+
                     <a href="{{ route('admin.notifications.create') }}"
                         class="list-group-item list-group-item-action {{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}">
                         <i class="bi bi-bell-fill"></i> Gửi thông báo Hệ thống

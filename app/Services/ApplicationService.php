@@ -151,10 +151,7 @@ class ApplicationService implements ApplicationServiceInterface
             $application->cv->user_id != $user->id
         ) {
 
-            abort(
-                403,
-                "Bạn không có quyền."
-            );
+            abort(403, "Bạn không có quyền.");
         }
 
         if (

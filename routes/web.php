@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AdminSkillController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\AdminReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -40,6 +41,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('notifications/create', [AdminNotificationController::class, 'create'])->name('notifications.create');
 
         Route::post('notifications', [AdminNotificationController::class, 'store'])->name('notifications.store');
+
+        Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+        Route::delete('reviews/{id}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 
         Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 

@@ -6,7 +6,7 @@ use App\Models\Notification;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Dùng ShouldBroadcastNow để bắn trực tiếp không qua Queue
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -18,9 +18,6 @@ class NotificationCreated implements ShouldBroadcastNow
         public Notification $notification
     ) {}
 
-    /**
-     * Kênh (Channel) nhận broadcast.
-     */
     public function broadcastOn(): array
     {
         return [
@@ -28,17 +25,11 @@ class NotificationCreated implements ShouldBroadcastNow
         ];
     }
 
-    /**
-     * Tên Event gửi về Frontend Echo client.
-     */
     public function broadcastAs(): string
     {
         return 'notification.created';
     }
 
-    /**
-     * Dữ liệu truyền kèm Event.
-     */
     public function broadcastWith(): array
     {
         return [

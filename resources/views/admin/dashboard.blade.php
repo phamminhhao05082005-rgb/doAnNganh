@@ -32,10 +32,8 @@
 
         <h5 class="mb-3"><i class="bi bi-lightning-charge-fill text-warning"></i> Truy cập nhanh</h5>
 
-        <!-- Bổ sung đầy đủ các nút tương ứng với Sidebar -->
         <div class="row g-3">
 
-            <!-- Thống kê hệ thống (Mới thêm) -->
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.analytics.index') }}" class="btn btn-secondary w-100 p-3 text-start shadow-sm">
                     <i class="bi bi-graph-up-arrow fs-4 me-2"></i>
@@ -43,7 +41,6 @@
                 </a>
             </div>
 
-            <!-- Quản lý doanh nghiệp -->
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.companies.index') }}" class="btn btn-primary w-100 p-3 text-start shadow-sm">
                     <i class="bi bi-buildings fs-4 me-2"></i>
@@ -51,15 +48,13 @@
                 </a>
             </div>
 
-            <!-- Quản lý tin tuyển dụng -->
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.jobs.index') }}" class="btn btn-warning text-dark w-100 p-3 text-start shadow-sm">
                     <i class="bi bi-briefcase fs-4 me-2"></i>
                     <span class="fw-bold">Quản lý tuyển dụng</span>
                 </a>
             </div>
-
-            <!-- Quản lý danh mục -->
+            
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.categories.index') }}" class="btn btn-success w-100 p-3 text-start shadow-sm">
                     <i class="bi bi-tags fs-4 me-2"></i>
@@ -67,7 +62,7 @@
                 </a>
             </div>
 
-            <!-- Quản lý kỹ năng -->
+           
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.skills.index') }}" class="btn btn-info text-white w-100 p-3 text-start shadow-sm">
                     <i class="bi bi-award fs-4 me-2"></i>
@@ -75,7 +70,14 @@
                 </a>
             </div>
 
-            <!-- Gửi thông báo hệ thống -->
+            <div class="col-md-4 col-sm-6">
+                <a href="{{ route('admin.reviews.index') }}" class="btn text-white w-100 p-3 text-start shadow-sm" style="background-color: #e83e8c;">
+                    <i class="bi bi-star-half fs-4 me-2"></i>
+                    <span class="fw-bold">Quản lý đánh giá</span>
+                </a>
+            </div>
+
+           
             <div class="col-md-4 col-sm-6">
                 <a href="{{ route('admin.notifications.create') }}" class="btn text-white w-100 p-3 text-start shadow-sm" style="background-color: #6f42c1;">
                     <i class="bi bi-bell-fill fs-4 me-2"></i>

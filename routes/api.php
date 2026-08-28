@@ -17,92 +17,11 @@ use App\Http\Controllers\Student\StudentEducationController;
 use App\Http\Controllers\Student\StudentExperienceController;
 use App\Http\Controllers\Student\StudentBookmarkController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Employer\EmployerStatisticController;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Student\ReviewController;
 use Illuminate\Support\Facades\Http;
-
-Route::get('/test-gemini', function () {
-    $apiKey = env('GEMINI_API_KEY');
-
-    // 1. Lấy danh sách các model từ Google API
-    $listUrl = "https://generativelanguage.googleapis.com/v1beta/models?key={$apiKey}";
-    $listResponse = Http::get($listUrl);
-
-    if ($listResponse->failed()) {
-        return response()->json([
-            'status' => 'error_fetching_models',
-            'message' => 'Lỗi kết nối API Key.',
-            'detail' => $listResponse->json()
-        ], $listResponse->status());
-    }
-
-    $models = $listResponse->json('models', []);
-    
-    // 2. Ưu tiên các model mới nhất và loại bỏ model deprecated/special
-    $selectedModel = null;
-    $preferredModels = [
-        'models/gemini-3.6-flash',
-        'models/gemini-3-flash',
-        'models/gemini-1.5-flash',
-        'models/gemini-1.5-pro'
-    ];
-
-    foreach ($preferredModels as $pref) {
-        foreach ($models as $m) {
-            if (($m['name'] ?? '') === $pref && in_array('generateContent', $m['supportedGenerationMethods'] ?? [])) {
-                $selectedModel = $m['name'];
-                break 2;
-            }
-        }
-    }
-
-    // Dự phòng: Lấy model Gemini bất kỳ có hỗ trợ generateContent
-    if (!$selectedModel) {
-        foreach ($models as $m) {
-            $name = $m['name'] ?? '';
-            $methods = $m['supportedGenerationMethods'] ?? [];
-            if (str_contains($name, 'gemini') && !str_contains($name, 'deep-research') && in_array('generateContent', $methods)) {
-                $selectedModel = $name;
-                break;
-            }
-        }
-    }
-
-    if (!$selectedModel) {
-        return response()->json([
-            'status' => 'no_valid_model_found',
-            'available_models' => array_column($models, 'name')
-        ], 404);
-    }
-
-    // 3. Gọi API generateContent
-    $generateUrl = "https://generativelanguage.googleapis.com/v1beta/{$selectedModel}:generateContent?key={$apiKey}";
-
-    $response = Http::post($generateUrl, [
-        'contents' => [
-            [
-                'parts' => [
-                    ['text' => 'Xin chào, hãy trả lời ngắn gọn: Bạn là ai?']
-                ]
-            ]
-        ]
-    ]);
-
-    if ($response->successful()) {
-        return response()->json([
-            'status' => 'success',
-            'model_used' => $selectedModel,
-            'reply' => $response->json('candidates.0.content.parts.0.text')
-        ]);
-    }
-
-    return response()->json([
-        'status' => 'error',
-        'model_used' => $selectedModel,
-        'detail' => $response->json()
-    ], $response->status());
-});
 
 
 Broadcast::routes([
@@ -154,27 +73,15 @@ Route::prefix('auth')->group(function () {
 
             Route::get('/myJobs', [EmployerJobController::class, 'getJobsOfCompany']);
 
-            Route::get(
-                '/jobs/{jobId}/applications',
-                [ApplicationController::class, 'jobApplications']
-            );
+            Route::get('/jobs/{jobId}/applications', [ApplicationController::class, 'jobApplications']);
 
-            Route::put(
-                '/applications/{id}/status',
-                [ApplicationController::class, 'updateStatus']
-            );
-
-            Route::get(
-                '/applications/{applicationId}/cv',
-                [ApplicationController::class, 'getCVDetail']
-            );
-
+            Route::put('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
+            Route::get('/applications/{applicationId}/cv', [ApplicationController::class, 'getCVDetail']);
             Route::post('/jobs/{jobId}/evaluate-cvs', [ApplicationController::class, 'evaluateJobCvs']);
+            Route::get('/statistics', [EmployerStatisticController::class, 'index']);
         });
 
-        Route::middleware('role:STUDENT')
-            ->prefix('student')
-            ->group(function () {
+        Route::middleware('role:STUDENT')->prefix('student')->group(function () {
 
                 Route::get('/profile', [StudentProfileController::class, 'show']);
                 Route::put('/profile', [StudentProfileController::class, 'update']);
