@@ -22,6 +22,7 @@ class CreateJobRequest extends FormRequest
             'salary_min' => 'nullable|numeric|min:0',
             'salary_max' => 'nullable|numeric|gte:salary_min',
             'location' => 'required|string|max:255',
+            'working_time' => 'required|string|max:255',
             'experience' => 'nullable|string|max:255',
             'deadline' => 'required|date|after:today',
             'skills' => 'nullable|array',

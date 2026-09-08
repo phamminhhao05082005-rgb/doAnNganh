@@ -11,12 +11,11 @@ use App\Interfaces\CVExperienceRepositoryInterface;
 class CVExperienceService
 implements CVExperienceServiceInterface
 {
-    protected CVExperienceRepositoryInterface $repository;
 
     public function __construct(
-        CVExperienceRepositoryInterface $repository
+        private CVExperienceRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+
     }
 
     public function getAll(

@@ -9,13 +9,12 @@ use App\Interfaces\CVTemplateServiceInterface;
 
 class CVTemplateService implements CVTemplateServiceInterface
 {
-    protected CVTemplateRepositoryInterface $repository;
 
     public function __construct(
-        CVTemplateRepositoryInterface $repository
+        private CVTemplateRepositoryInterface $repository
     )
     {
-        $this->repository=$repository;
+        
     }
 
     public function getAll(): Collection

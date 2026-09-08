@@ -9,16 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentProfileService implements StudentProfileServiceInterface
 {
-    protected StudentProfileRepositoryInterface $repository;
 
-    protected CloudinaryService $cloudinary;
-
-    public function __construct(
-        StudentProfileRepositoryInterface $repository,
-        CloudinaryService $cloudinary
-    ) {
-        $this->repository = $repository;
-        $this->cloudinary = $cloudinary;
+    public function __construct(private StudentProfileRepositoryInterface $repository,
+        private CloudinaryService $cloudinary) {
+       
     }
 
     public function getProfile(User $user): User
@@ -31,12 +25,7 @@ class StudentProfileService implements StudentProfileServiceInterface
         $this->checkOwner($user);
 
         if ($avatar) {
-
-            $upload = $this->cloudinary->uploadFile(
-                $avatar,
-                'student_avatars'
-            );
-
+            $upload = $this->cloudinary->uploadFile($avatar, 'student_avatars');
             $data['avatar'] = $upload['url'];
         }
 

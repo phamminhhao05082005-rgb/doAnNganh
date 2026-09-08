@@ -19,6 +19,7 @@ class JobDetailResource extends JsonResource
             'salary_min' => $this->salary_min,
             'salary_max' => $this->salary_max,
             'location' => $this->location,
+            'working_time' => $this->working_time,
             'experience' => $this->experience,
             'deadline' => $this->deadline,
             'status' => $this->status,

@@ -17,9 +17,6 @@ class AdminNotificationController extends Controller
         return view('admin.notifications.create');
     }
 
-    /**
-     * Xử lý gửi thông báo hàng loạt
-     */
     public function store(Request $request)
     {
         $request->validate([

@@ -31,7 +31,8 @@ class EmployerCompanyController extends Controller
     {
         return new CompanyResource(
             $this->companyService->updateMyCompany(
-                $request->validated()
+                $request->validated(),
+                $request->file('logo')
             )
         );
     }

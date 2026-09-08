@@ -68,7 +68,7 @@ class AuthService implements AuthServiceInterface
     public function googleLogin(string $googleToken): array
     {
         $client = new Client([
-            'client_id' => env('GOOGLE_CLIENT_ID')
+            'client_id' => config('services.google.client_id')
         ]);
 
         $payload = $client->verifyIdToken($googleToken);

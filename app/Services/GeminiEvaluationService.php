@@ -13,10 +13,6 @@ class GeminiEvaluationService
         $job = $application->job;
         $cv  = $application->cv;
 
-        // =========================================================
-        // 1. CHUẨN BỊ THÔNG TIN YÊU CẦU CÔNG VIỆC
-        // =========================================================
-
         $skillsRequired = $job->skills
             ? $job->skills->pluck('name')->implode(', ')
             : 'Không có';
@@ -28,10 +24,6 @@ Yêu cầu công việc: {$job->requirement}
 Yêu cầu kinh nghiệm: {$job->experience} năm
 Kỹ năng yêu cầu: {$skillsRequired}
 ";
-
-        // =========================================================
-        // 2. CHUẨN BỊ THÔNG TIN CV ỨNG VIÊN
-        // =========================================================
 
         $educations = $cv->educations
             ? $cv->educations->map(function ($edu) {
@@ -62,10 +54,6 @@ Học vấn:
 Kinh nghiệm làm việc:
 {$experiences}
 ";
-
-        // =========================================================
-        // 3. CHUẨN BỊ PROMPT
-        // =========================================================
 
         $prompt = "
 Bạn là một chuyên gia tuyển dụng (HR Specialist) cao cấp.
@@ -100,9 +88,6 @@ Cấu trúc chính xác:
 }
 ";
 
-        // =========================================================
-        // 4. LẤY GEMINI API KEY
-        // =========================================================
 
         $apiKey = env('GEMINI_API_KEY');
 
@@ -113,11 +98,6 @@ Cấu trúc chính xác:
                 'Chưa cấu hình GEMINI_API_KEY trong hệ thống.'
             );
         }
-
-        // =========================================================
-        // 5. LẤY DANH SÁCH MODEL TỪ GOOGLE GEMINI API
-        //    Giống flow /test-gemini đang chạy thành công
-        // =========================================================
 
         $listUrl =
             "https://generativelanguage.googleapis.com/v1beta/models?key={$apiKey}";
@@ -148,10 +128,6 @@ Cấu trúc chính xác:
 
         $models = $listResponse->json('models', []);
 
-        // =========================================================
-        // 6. CHỌN MODEL
-        // =========================================================
-
         $selectedModel = null;
 
         $preferredModels = [
@@ -161,7 +137,6 @@ Cấu trúc chính xác:
             'models/gemini-1.5-pro',
         ];
 
-        // Ưu tiên các model mong muốn
         foreach ($preferredModels as $pref) {
             foreach ($models as $model) {
 
@@ -178,11 +153,6 @@ Cấu trúc chính xác:
                 }
             }
         }
-
-        // =========================================================
-        // 7. FALLBACK: TÌM BẤT KỲ MODEL GEMINI NÀO
-        //    CÓ generateContent
-        // =========================================================
 
         if (!$selectedModel) {
 
@@ -206,10 +176,6 @@ Cấu trúc chính xác:
             }
         }
 
-        // =========================================================
-        // 8. KHÔNG TÌM THẤY MODEL
-        // =========================================================
-
         if (!$selectedModel) {
 
             Log::error(
@@ -226,10 +192,6 @@ Cấu trúc chính xác:
                 'Không tìm thấy model Gemini phù hợp.'
             );
         }
-
-        // =========================================================
-        // 9. GỌI GEMINI generateContent
-        // =========================================================
 
         $generateUrl =
             "https://generativelanguage.googleapis.com/v1beta/"
@@ -263,10 +225,6 @@ Cấu trúc chính xác:
             );
         }
 
-        // =========================================================
-        // 10. XỬ LÝ RESPONSE
-        // =========================================================
-
         if (!$response->successful()) {
 
             Log::error(
@@ -279,7 +237,6 @@ Cấu trúc chính xác:
             );
         }
 
-        // Lấy text Gemini trả về
         $rawText = $response->json(
             'candidates.0.content.parts.0.text'
         );
@@ -299,13 +256,8 @@ Cấu trúc chính xác:
             );
         }
 
-        // =========================================================
-        // 11. LÀM SẠCH JSON
-        // =========================================================
-
         $cleanJson = trim($rawText);
 
-        // Xóa ```json ... ```
         $cleanJson = preg_replace(
             '/^```json\s*/i',
             '',
@@ -325,10 +277,6 @@ Cấu trúc chính xác:
         );
 
         $cleanJson = trim($cleanJson);
-
-        // =========================================================
-        // 12. DECODE JSON
-        // =========================================================
 
         $data = json_decode(
             $cleanJson,
@@ -360,10 +308,6 @@ Cấu trúc chính xác:
             ];
         }
 
-        // =========================================================
-        // 13. JSON KHÔNG HỢP LỆ
-        // =========================================================
-
         Log::error(
             "Gemini trả về JSON không hợp lệ cho Application ID "
             . $application->id,
@@ -378,10 +322,6 @@ Cấu trúc chính xác:
             'Gemini trả về dữ liệu không đúng định dạng JSON.'
         );
     }
-
-    // =============================================================
-    // FALLBACK RESPONSE
-    // =============================================================
 
     private function fallbackResponse(string $message): array
     {

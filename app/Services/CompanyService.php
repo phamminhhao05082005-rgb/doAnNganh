@@ -13,7 +13,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CompanyService implements CompanyServiceInterface
 {
     public function __construct(
-        private CompanyRepositoryInterface  $companyRepository
+        private CompanyRepositoryInterface  $companyRepository,
+        private CloudinaryService $cloudinary
     ) {}
 
     public function getAll()
@@ -131,26 +132,31 @@ class CompanyService implements CompanyServiceInterface
         return $company;
     }
 
-    public function updateMyCompany(array $data): Company
+    public function updateMyCompany(array $data, $logo = null): Company
     {
-        $company = $this->companyRepository
-            ->findByOwnerId(Auth::id());
+        $company = $this->companyRepository->findByOwnerId(Auth::id());
 
         if (!$company) {
             throw new Exception("Company not found.");
         }
 
+        $logoUrl = $company->logo; 
+        if ($logo) {
+            $upload = $this->cloudinary->uploadFile($logo, 'company_logos');
+            $logoUrl = $upload['url'];
+        }
+
         $userData = [
             'full_name' => $data['full_name'],
-            'phone' => $data['phone'] ?? null,
+            'phone'     => $data['phone'] ?? null,
         ];
 
         $companyData = [
-            'name' => $data['name'],
-            'website' => $data['website'] ?? null,
-            'address' => $data['address'] ?? null,
+            'name'        => $data['name'],
+            'website'     => $data['website'] ?? null,
+            'address'     => $data['address'] ?? null,
             'description' => $data['description'] ?? null,
-            'logo' => $data['logo'] ?? null,
+            'logo'        => $logoUrl,
         ];
 
         return $this->companyRepository->update($company, $userData, $companyData);

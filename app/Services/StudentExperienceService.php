@@ -12,12 +12,11 @@ use Exception;
 
 class StudentExperienceService implements StudentExperienceServiceInterface
 {
-    protected StudentExperienceRepositoryInterface $repository;
 
     public function __construct(
-        StudentExperienceRepositoryInterface $repository
+        private StudentExperienceRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+        
     }
 
     public function getAll(User $user): Collection
@@ -25,42 +24,19 @@ class StudentExperienceService implements StudentExperienceServiceInterface
         return $this->repository->getAll($user);
     }
 
-    public function create(
-        User $user,
-        array $data
-    ): Experience {
+    public function create(User $user, array $data): Experience {
         $this->checkUserMatch($user);
-
-        return $this->repository->create(
-            $user,
-            $data
-        );
+        return $this->repository->create($user, $data);
     }
 
-    public function update(
-        User $user,
-        Experience $experience,
-        array $data
-    ): Experience {
+    public function update(User $user, Experience $experience, array $data): Experience {
         $this->checkOwner($user, $experience);
-
-        return $this->repository->update(
-            $user,
-            $experience,
-            $data
-        );
+        return $this->repository->update($user, $experience, $data);
     }
 
-    public function delete(
-        User $user,
-        Experience $experience
-    ): void {
+    public function delete(User $user, Experience $experience): void {
         $this->checkOwner($user, $experience);
-
-        $this->repository->delete(
-            $user,
-            $experience
-        );
+        $this->repository->delete($user, $experience);
     }
 
     private function checkOwner(User $user, Experience $experience): void
@@ -69,7 +45,7 @@ class StudentExperienceService implements StudentExperienceServiceInterface
 
         $profile = $user->candidateProfile;
         if (!$profile || $experience->profile_id !== $profile->id) {
-            throw new Exception("You cannot access or modify this experience record.");
+            throw new Exception("Bạn không có quyền truy cập và thay đổi.");
         }
     }
 

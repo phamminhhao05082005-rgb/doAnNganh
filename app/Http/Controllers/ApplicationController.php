@@ -37,7 +37,7 @@ class ApplicationController extends Controller
 
     public function myApplications(Request $request): AnonymousResourceCollection
     {
-        $perPage = $request->input('per_page', 6);
+        $perPage = $request->input('per_page', 10);
 
         return ApplicationResource::collection(
             $this->service->getMyApplications(

@@ -13,12 +13,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StudentBookmarkService implements StudentBookmarkServiceInterface
 {
-    protected StudentBookmarkRepositoryInterface $repository;
 
     public function __construct(
-        StudentBookmarkRepositoryInterface $repository
+        private StudentBookmarkRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+        
     }
 
     public function getAll(User $user, int $perPage = 6): LengthAwarePaginator
@@ -34,7 +33,7 @@ class StudentBookmarkService implements StudentBookmarkServiceInterface
         $this->checkOwner($user);
 
         if (!$job->status) {
-            throw new Exception("Cannot bookmark an inactive job.");
+            throw new Exception("Không thể lưu Job đã hết hạn");
         }
 
         $this->repository->bookmark(

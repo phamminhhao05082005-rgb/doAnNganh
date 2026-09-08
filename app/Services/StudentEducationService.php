@@ -12,12 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentEducationService implements StudentEducationServiceInterface
 {
-    protected StudentEducationRepositoryInterface $repository;
 
     public function __construct(
-        StudentEducationRepositoryInterface $repository
+        private StudentEducationRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+        
     }
 
     public function getAll(User $user): Collection
@@ -56,7 +55,7 @@ class StudentEducationService implements StudentEducationServiceInterface
 
         $profile = $user->candidateProfile;
         if (!$profile || $education->profile_id !== $profile->id) {
-            throw new Exception("You cannot access or modify this education record.");
+            throw new Exception("Bạn không có quyền truy cập và thay đổi.");
         }
     }
 

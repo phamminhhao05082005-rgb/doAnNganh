@@ -21,7 +21,7 @@ class StudentBookmarkController extends Controller
 
     public function index(Request $request): AnonymousResourceCollection
     {
-        $perPage = $request->input('per_page', 6);
+        $perPage = $request->input('per_page', 4);
 
         return StudentBookmarkResource::collection(
             $this->service->getAll($request->user(), $perPage)

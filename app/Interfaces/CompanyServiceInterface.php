@@ -20,5 +20,5 @@ interface CompanyServiceInterface
 
     public function getMyCompany(): Company;
 
-    public function updateMyCompany(array $data): Company;
+    public function updateMyCompany(array $data, $logoFile = null): Company;
 }

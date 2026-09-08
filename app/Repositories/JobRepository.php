@@ -40,11 +40,8 @@ class JobRepository implements JobRepositoryInterface
         }
 
         if (!empty($filters['keyword'])) {
-
             $keyword = $filters['keyword'];
-
             $query->where(function ($q) use ($keyword) {
-
                 $q->where('title', 'like', "%{$keyword}%")
                     ->orWhere('description', 'like', "%{$keyword}%")
                     ->orWhereHas('company', function ($company) use ($keyword) {
@@ -54,37 +51,31 @@ class JobRepository implements JobRepositoryInterface
         }
 
         if (!empty($filters['category_id'])) {
-
-            $query->where(
-                'category_id',
-                $filters['category_id']
-            );
+            $query->where('category_id', $filters['category_id']);
         }
 
         if (!empty($filters['salary_min'])) {
-
-            $query->where(
-                'salary_min',
-                '>=',
-                $filters['salary_min']
-            );
+            $query->where('salary_min', '>=', $filters['salary_min']);
         }
 
         if (!empty($filters['salary_max'])) {
+            $query->where('salary_max', '<=', $filters['salary_max']);
+        }
 
-            $query->where(
-                'salary_max',
-                '<=',
-                $filters['salary_max']
-            );
+        if (!empty($filters['work_days'])) {
+            $dayStr = mb_strtolower($filters['work_days']);
+            if (preg_match('/(\d+)/', $dayStr, $matches)) {
+                $num = $matches[1];
+
+                $query->whereRaw("LOWER(working_time) REGEXP ?", ["(t|thu|thứ)[[:space:]]*{$num}"]);
+            } else {
+                $query->whereRaw("LOWER(working_time) REGEXP ?", ["(cn|chủ nhật|chu nhat)"]);
+            }
         }
 
         if (!empty($filters['skills'])) {
-
             $skills = $filters['skills'];
-
             $query->whereHas('skills', function ($q) use ($skills) {
-
                 $q->whereIn('skills.id', $skills);
             });
         }

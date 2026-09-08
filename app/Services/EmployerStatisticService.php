@@ -7,11 +7,10 @@ use App\Interfaces\EmployerStatisticServiceInterface;
 
 class EmployerStatisticService implements EmployerStatisticServiceInterface
 {
-    protected $statisticRepository;
 
-    public function __construct(EmployerStatisticRepositoryInterface $statisticRepository)
+    public function __construct(private EmployerStatisticRepositoryInterface $statisticRepository)
     {
-        $this->statisticRepository = $statisticRepository;
+    
     }
 
     public function getDashboardStatistics(int $companyId, int $year)

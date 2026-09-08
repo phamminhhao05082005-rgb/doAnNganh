@@ -15,7 +15,6 @@
 
     <div class="card-body">
 
-        <!-- CARDS HÀNG 1: TỔNG QUAN HỆ THỐNG -->
         <div class="row g-4 mb-3">
             <div class="col-md-6 col-lg-3">
                 <div class="card border-0 bg-primary bg-opacity-10 h-100 shadow-sm">
@@ -74,7 +73,6 @@
             </div>
         </div>
 
-        <!-- CARDS HÀNG 2: TRẠNG THÁI TIN TUYỂN DỤNG & KHÁC -->
         <div class="row g-4 mb-4">
             <div class="col-md-6 col-lg-6">
                 <div class="card border-0 bg-success bg-opacity-10 shadow-sm">
@@ -145,7 +143,6 @@
 
         <hr class="my-4">
 
-        <!-- SECTION BIỂU ĐỒ TRÒN/DOUGHNUT -->
         <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-pie-chart-fill me-2"></i>Thống Kê Ngành Nghề & Mẫu CV</h5>
         <div class="row g-4 mb-4">
             <div class="col-md-4">
@@ -178,12 +175,11 @@
 
         <hr class="my-4">
 
-        <!-- SECTION BIỂU ĐỒ ĐƯỜNG & BIỂU ĐỒ CỘT -->
-        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-bar-chart-line-fill me-2"></i>Xu Hướng & Hoạt Động Doanh Nghiệp</h5>
+        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-bar-chart-line-fill me-2"></i>Xu Hướng Hoạt Động Theo Năm</h5>
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-white fw-semibold text-center border-bottom-0 pt-3">Số lượt Ứng tuyển theo Tháng</div>
+                    <div class="card-header bg-white fw-semibold text-center border-bottom-0 pt-3">Số lượt Ứng tuyển trong năm</div>
                     <div class="card-body" style="min-height: 300px;">
                         <canvas id="applicationsOverTimeChart"></canvas>
                     </div>
@@ -192,9 +188,9 @@
 
             <div class="col-md-6">
                 <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-white fw-semibold text-center border-bottom-0 pt-3">Top Doanh nghiệp Đăng Tin</div>
+                    <div class="card-header bg-white fw-semibold text-center border-bottom-0 pt-3">Số lượng Đăng tin tuyển dụng trong năm</div>
                     <div class="card-body" style="min-height: 300px;">
-                        <canvas id="companyJobsChart"></canvas>
+                        <canvas id="jobsOverTimeChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -204,14 +200,12 @@
 
 </div>
 
-<!-- CDN Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const chartColors = ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#0dcaf0', '#6f42c1', '#fd7e14', '#20c997'];
 
-    // 1. Biểu đồ Ngành nghề
     fetch("{{ route('admin.analytics.chart-data') }}")
         .then(res => res.json())
         .then(res => {
@@ -230,30 +224,29 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    // 2. Biểu đồ Đường (Lượt ứng tuyển theo thời gian)
     fetch("{{ route('admin.analytics.applications-over-time') }}")
         .then(res => res.json())
         .then(res => {
             if (res.success) {
                 new Chart(document.getElementById('applicationsOverTimeChart'), {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: res.data.labels,
                         datasets: [{
                             label: 'Lượt ứng tuyển',
                             data: res.data.data,
-                            borderColor: '#0d6efd',
-                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                            fill: true,
-                            tension: 0.3
+                            backgroundColor: '#0d6efd'
                         }]
                     },
-                    options: { responsive: true, plugins: { legend: { display: false } } }
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                    }
                 });
             }
         });
 
-    // 3. Biểu đồ Tròn (% Mẫu CV được dùng)
     fetch("{{ route('admin.analytics.cv-templates-usage') }}")
         .then(res => res.json())
         .then(res => {
@@ -269,19 +262,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    // 4. Biểu đồ Cột (Tin tuyển dụng theo Doanh nghiệp)
-    fetch("{{ route('admin.analytics.company-jobs') }}")
+    fetch("{{ route('admin.analytics.jobs-over-time') }}")
         .then(res => res.json())
         .then(res => {
             if (res.success) {
-                new Chart(document.getElementById('companyJobsChart'), {
-                    type: 'bar',
+                new Chart(document.getElementById('jobsOverTimeChart'), {
+                    type: 'line',
                     data: {
                         labels: res.data.labels,
                         datasets: [{
-                            label: 'Số lượng tin',
+                            label: 'Số lượng đăng tin',
                             data: res.data.data,
-                            backgroundColor: '#198754'
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            fill: true,
+                            tension: 0.3
                         }]
                     },
                     options: {

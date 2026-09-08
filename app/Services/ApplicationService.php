@@ -16,15 +16,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ApplicationService implements ApplicationServiceInterface
 {
-    protected ApplicationRepositoryInterface $repository;
-    protected GeminiEvaluationService $geminiService;
 
     public function __construct(
-        ApplicationRepositoryInterface $repository,
-        GeminiEvaluationService $geminiService
+        private ApplicationRepositoryInterface $repository,
+        private GeminiEvaluationService $geminiService
     ) {
-        $this->repository = $repository;
-        $this->geminiService = $geminiService;
     }
 
     public function apply(
@@ -32,31 +28,17 @@ class ApplicationService implements ApplicationServiceInterface
         array $data
     ): Application {
 
-        $job = Job::findOrFail(
-            $data['job_id']
-        );
+        $job = Job::findOrFail($data['job_id']);
 
         if (!$job->status) {
-
-            throw new \Exception(
-                "Công việc đã đóng."
-            );
+            throw new \Exception("Công việc đã đóng.");
         }
 
-        if (
-            $job->deadline &&
-            now()->gt($job->deadline)
-        ) {
-
-            throw new \Exception(
-                "Đã hết hạn ứng tuyển."
-            );
+        if ($job->deadline && now()->gt($job->deadline)) {
+            throw new \Exception("Đã hết hạn ứng tuyển.");
         }
 
-        return $this->repository->apply(
-            $user,
-            $data
-        );
+        return $this->repository->apply($user, $data);
     }
 
     public function getMyApplications(
@@ -64,8 +46,7 @@ class ApplicationService implements ApplicationServiceInterface
         int $perPage = 10
     ): LengthAwarePaginator {
 
-        return $this->repository
-            ->getMyApplications($user, $perPage);
+        return $this->repository->getMyApplications($user, $perPage);
     }
 
     public function getApplicationsOfEmployer(
@@ -96,17 +77,9 @@ class ApplicationService implements ApplicationServiceInterface
             abort(403, 'Bạn không có quyền.');
         }
 
-        $application = $this->repository
-            ->updateStatus(
-                $application,
-                $status
-            );
-
+        $application = $this->repository->updateStatus($application, $status);
         $candidateUser = $application->cv->user;
-
-        $studentId = $application
-            ->cv
-            ->user_id;
+        $studentId = $application->cv->user_id;
 
         $title = 'Cập nhật hồ sơ ứng tuyển';
 

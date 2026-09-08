@@ -42,8 +42,8 @@ class SendApplicationStatusEmailJob implements ShouldQueue
             'content-type' => 'application/json',
         ])->post('https://api.brevo.com/v3/smtp/email', [
             'sender' => [
-                'name'  => 'Job Portal',
-                'email' => 'phamminhhao05082005@gmail.com',
+                'name'  => config('services.brevo.name', 'Job Portal'),
+                'email' => config('services.brevo.address'),
             ],
             'to' => [
                 [

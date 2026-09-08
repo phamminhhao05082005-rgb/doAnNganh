@@ -11,12 +11,11 @@ use App\Interfaces\CVEducationRepositoryInterface;
 class CVEducationService
 implements CVEducationServiceInterface
 {
-    protected CVEducationRepositoryInterface $repository;
 
     public function __construct(
-        CVEducationRepositoryInterface $repository
+        private CVEducationRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+        
     }
 
     public function getAll(

@@ -21,7 +21,7 @@ class UpdateMyCompanyRequest extends FormRequest
             'website' => 'nullable|url|max:255',
             'address' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ];
     }

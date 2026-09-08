@@ -51,6 +51,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/analytics/applications-over-time', [AnalyticsController::class, 'applicationsOverTime'])->name('analytics.applications-over-time');
         Route::get('/analytics/cv-templates-usage', [AnalyticsController::class, 'cvTemplatesUsage'])->name('analytics.cv-templates-usage');
-        Route::get('/analytics/company-jobs', [AnalyticsController::class, 'companyJobs'])->name('analytics.company-jobs');
+        Route::get('/analytics/jobs-over-time', [AnalyticsController::class, 'jobsOverTime'])->name('analytics.jobs-over-time');
     });
 });

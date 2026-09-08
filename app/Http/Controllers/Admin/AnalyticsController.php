@@ -49,11 +49,11 @@ class AnalyticsController extends Controller
         ]);
     }
 
-    public function companyJobs(): JsonResponse
+    public function jobsOverTime(): JsonResponse
     {
         return response()->json([
             'success' => true,
-            'data'    => $this->analyticsService->getAdvancedChartsData()['top_companies_jobs']
+            'data'    => $this->analyticsService->getAdvancedChartsData()['jobs_over_time']
         ]);
     }
 }

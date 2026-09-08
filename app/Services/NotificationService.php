@@ -11,11 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationService
 {
-    protected $repository;
 
-    public function __construct(NotificationRepositoryInterface $repository)
+    public function __construct(private NotificationRepositoryInterface $repository)
     {
-        $this->repository = $repository;
+        
     }
 
     public function markAsRead(User $user, int $notificationId): Notification

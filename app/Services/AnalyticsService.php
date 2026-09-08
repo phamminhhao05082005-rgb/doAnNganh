@@ -6,11 +6,9 @@ use App\Repositories\AnalyticsRepository;
 
 class AnalyticsService
 {
-    protected AnalyticsRepository $analyticsRepository;
 
-    public function __construct(AnalyticsRepository $analyticsRepository)
+    public function __construct(private AnalyticsRepository $analyticsRepository)
     {
-        $this->analyticsRepository = $analyticsRepository;
     }
 
     public function getOverviewStats(): array
@@ -49,7 +47,7 @@ class AnalyticsService
         return [
             'applications_over_time' => $this->analyticsRepository->getApplicationsByMonth(),
             'cv_templates_usage'     => $this->analyticsRepository->getCVTemplatesUsage(),
-            'top_companies_jobs'     => $this->analyticsRepository->getTopCompaniesByJobs(10),
+            'jobs_over_time'     => $this->analyticsRepository->getJobsByMonth(),
         ];
     }
 }

@@ -18,6 +18,7 @@ class Job extends Model
         'salary_min',
         'salary_max',
         'location',
+        'working_time',
         'experience',
         'deadline',
         'status',

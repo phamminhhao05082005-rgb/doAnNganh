@@ -14,39 +14,18 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ApplicationRepository
 implements ApplicationRepositoryInterface
 {
-    public function apply(
-        User $user,
-        array $data
-    ): Application {
+    public function apply(User $user, array $data): Application {
 
-        $cv = CV::where(
-            'id',
-            $data['cv_id']
-        )
-            ->where(
-                'user_id',
-                $user->id
-            )
-            ->first();
+        $cv = CV::where('id', $data['cv_id'])->where('user_id', $user->id)->first();
 
         if (!$cv) {
-
             throw new ModelNotFoundException();
         }
 
-        $job = Job::findOrFail(
-            $data['job_id']
-        );
+        $job = Job::findOrFail($data['job_id']);
 
-        $exists = Application::where(
-            'job_id',
-            $job->id
-        )
-            ->where(
-                'cv_id',
-                $cv->id
-            )
-            ->exists();
+        $exists = Application::where('job_id', $job->id)
+            ->where('cv_id', $cv->id)->exists();
 
         if ($exists) {
 
@@ -58,11 +37,8 @@ implements ApplicationRepositoryInterface
         return Application::create([
 
             'job_id' => $job->id,
-
             'cv_id' => $cv->id,
-
             'status' => 'PENDING',
-
             'applied_at' => now()
 
         ]);

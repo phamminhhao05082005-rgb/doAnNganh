@@ -15,12 +15,11 @@ use Illuminate\Support\Facades\DB;
 class CVService
 implements CVServiceInterface
 {
-    protected CVRepositoryInterface $repository;
 
     public function __construct(
-        CVRepositoryInterface $repository
+        private CVRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
+        
     }
 
     public function getMyCVs(User $user, int $perPage = 10): LengthAwarePaginator
