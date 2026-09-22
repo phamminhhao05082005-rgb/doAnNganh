@@ -89,7 +89,8 @@ Cấu trúc chính xác:
 ";
 
 
-        $apiKey = env('GEMINI_API_KEY');
+        // $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
 
         if (empty($apiKey)) {
             Log::error('Gemini API Key không tồn tại hoặc bị rỗng.');

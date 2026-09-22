@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            // Thêm khoá ngoại job_id, để nullable() phòng trường hợp thông báo chung không gắn với job
+            
             $table->foreignId('job_id')
                 ->nullable()
                 ->after('user_id')

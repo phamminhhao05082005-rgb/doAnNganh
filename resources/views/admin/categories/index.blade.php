@@ -42,15 +42,10 @@
                         <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $category->id }}">
                             <i class="bi bi-pencil"></i> Sửa
                         </button>
-                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xoá?')">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Xoá</button>
-                        </form>
+                        
                     </td>
                 </tr>
 
-                <!-- Modal Sửa -->
                 <div class="modal fade" id="editModal{{ $category->id }}" tabindex="-1">
                     <div class="modal-dialog">
                         <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">

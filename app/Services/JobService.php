@@ -50,11 +50,6 @@ class JobService implements JobServiceInterface
                 return $job;
 
             case 'STUDENT':
-
-                if (!$job->status) {
-                    throw new Exception("Job not found.");
-                }
-
                 return $job;
 
             default:

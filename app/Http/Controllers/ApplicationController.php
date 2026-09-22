@@ -7,10 +7,12 @@ use App\Http\Requests\Employer\UpdateApplicationStatusRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Http\Resources\CVResource;
 use App\Interfaces\ApplicationServiceInterface;
+use App\Jobs\EvaluateJobCvsJob;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
@@ -28,7 +30,7 @@ class ApplicationController extends Controller
         return new ApplicationResource(
 
             $this->service->apply(
-                auth()->user(),
+                Auth::user(),
                 $request->validated()
             )
 
@@ -69,7 +71,7 @@ class ApplicationController extends Controller
         return new ApplicationResource(
 
             $this->service->updateStatus(
-                auth()->user(),
+                Auth::user(),
                 $id,
                 $request->validated()['status']
             )
@@ -81,7 +83,7 @@ class ApplicationController extends Controller
         int $id
     ) {
         $this->service->delete(
-            auth()->user(),
+            Auth::user(),
             $id
         );
 
@@ -96,7 +98,7 @@ class ApplicationController extends Controller
         $application = Application::with(['job', 'cv.template', 'cv.educations', 'cv.experiences'])
             ->findOrFail($applicationId);
 
-        $user = auth()->user();
+        $user = Auth::user();
         if (
             !$application->job ||
             !$application->job->company ||
@@ -120,15 +122,13 @@ class ApplicationController extends Controller
     {
         try {
             $user = $request->user();
-
             $force = $request->boolean('force', false);
 
-            $result = $this->service->evaluateApplicationsByJob($user, $jobId, $force);
+            EvaluateJobCvsJob::dispatch($user, $jobId, $force);
 
             return response()->json([
                 'status'  => 'success',
-                'message' => 'Đánh giá danh sách CV thành công.',
-                'data'    => $result
+                'message' => 'Đánh giá danh sách CV thành công.'
             ]);
         } catch (\Exception $e) {
             return response()->json([

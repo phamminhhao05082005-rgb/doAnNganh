@@ -51,9 +51,9 @@
                 class="form-control">
 
             @if(!isset($company))
-                <small class="text-danger">
-                    Bắt buộc khi tạo mới
-                </small>
+            <small class="text-danger">
+                Bắt buộc khi tạo mới
+            </small>
             @endif
 
         </div>
@@ -134,19 +134,20 @@
 </div>
 
 <div class="mb-3">
+    <label class="form-label">Logo</label>
 
-    <label class="form-label">
-
-        Logo
-
-    </label>
+    @if(isset($company->logo) && $company->logo)
+    <div class="mb-2">
+        <img src="{{ asset($company->logo) }}" alt="Logo hiện tại" width="100" class="img-thumbnail">
+    </div>
+    @endif
 
     <input
-        type="text"
+        type="file"
         name="logo"
         class="form-control"
-        value="{{ old('logo', $company->logo ?? '') }}">
-
+        accept="image/*">
+    <small class="text-muted">Chọn file ảnh mới nếu muốn thay đổi logo.</small>
 </div>
 
 <div class="mb-3">
@@ -171,7 +172,7 @@
 </button>
 
 <a href="{{ route('admin.companies.index') }}"
-   class="btn btn-secondary">
+    class="btn btn-secondary">
 
     Quay lại
 
