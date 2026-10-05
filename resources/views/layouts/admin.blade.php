@@ -92,7 +92,7 @@
 
                     <a href="{{ route('admin.reviews.index') }}"
                         class="list-group-item list-group-item-action {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
-                        <i class="bi bi-star-half"></i> 
+                        <i class="bi bi-star-half"></i>
                         Quản lý đánh giá
                     </a>
 

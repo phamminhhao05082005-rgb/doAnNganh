@@ -28,7 +28,7 @@
             </div>
             
             <div class="body">
-                <p class="greeting">Xin chào <strong>{{ $application->cv->user->name ?? 'Ứng viên' }}</strong>,</p>
+                <p class="greeting">Xin chào <strong>{{ $application->cv->full_name ?? $application->cv->user->full_name ?? 'Ứng viên' }}</strong>,</p>
                 
                 <p>Cảm ơn bạn đã ứng tuyển tại <strong>{{ $application->job->company->name ?? 'Công ty' }}</strong>. Trạng thái hồ sơ ứng tuyển của bạn đã được thay đổi:</p>
                 

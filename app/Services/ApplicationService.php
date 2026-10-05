@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\ApplicationRepositoryInterface;
 use App\Interfaces\ApplicationServiceInterface;
 use App\Models\Notification;
-use App\Jobs\SendApplicationStatusEmailJob;
+use App\Mail\ApplicationStatusMail;
+use Illuminate\Support\Facades\Mail;
 use App\Services\GeminiEvaluationService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -106,8 +107,10 @@ class ApplicationService implements ApplicationServiceInterface
 
         event(new NotificationCreated($notification));
 
-        if ($candidateUser && $candidateUser->email) {
-            SendApplicationStatusEmailJob::dispatch($application);
+        $candidateEmail = $application->cv->email ?? $candidateUser?->email;
+
+        if ($candidateEmail) {
+            Mail::to($candidateEmail)->queue(new ApplicationStatusMail($application));
         }
 
         return $application;
